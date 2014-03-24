@@ -1,8 +1,13 @@
 package neat;
+import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import paint.PaintProgram;
 
@@ -14,24 +19,29 @@ public class Evolution {
 	int numInputs;
 	int popSize;
 	int maxNodes;
+	EvolutionPanel panel;
 
 	public Evolution(int numInputs, int numOutputs, int popSize, int maxNodes){
+		super();
 		this.numInputs = numInputs;
 		this.numOutputs = numOutputs;
 		this.popSize = popSize;
 		this.maxNodes = maxNodes;
+		panel = new EvolutionPanel();
 	}
 	
 	public Painter evolvePainter(int paintTime, int iterations){
 		
-		Population neatPop = new Population(	
-									popSize /* population size */, 
-									numInputs /* network inputs */ , 
-									numOutputs /* network outputs */, 
-									maxNodes /* max index of nodes */, 
-									true /* recurrent */, 
-									0.5 /* probability of connecting two nodes */ );
-		
+//		Population neatPop = new Population(	
+//									popSize /* population size */, 
+//									numInputs /* network inputs */ , 
+//									numOutputs /* network outputs */, 
+//									maxNodes /* max index of nodes */, 
+//									true /* recurrent */, 
+//									0.5 /* probability of connecting two nodes */ );
+//		
+		Population neatPop = new Population(30 /* population size */, 9 /* network inputs */ , 2 /* network outputs */, 5 /* max index of nodes */, true /* recurrent */, 0.5 /* probability of connecting two nodes */ );
+
 		for(int i = 0; i < iterations; i++){
 			train(neatPop, paintTime);
 			assignFitness(neatPop, i);
@@ -49,8 +59,8 @@ public class Evolution {
 		PaintProgram program = new PaintProgram(false); 
 		List<BufferedImage> images = new ArrayList<BufferedImage>();
 		
-		for(int i=0;i<neatOrgs.size();i++)
-		{
+		for(int i=0;i<neatOrgs.size();i++){
+			
 			// Extract the neural network from the jNEAT organism.
 			Painter painter = organismToPainter((Organism)neatOrgs.get(i));
 			
@@ -58,8 +68,18 @@ public class Evolution {
 				
 		}
 		
+		showImages(images);
+		
 	}
 	
+	private void showImages(List<BufferedImage> pictures) {
+		
+		this.panel.clearPictures();
+		this.panel.addPictures(pictures);
+		this.panel.repaint();
+		
+	}
+
 	private void assignFitness(Population neatPop, int generation) {
 		
 		Vector neatOrgs = neatPop.getOrganisms();
