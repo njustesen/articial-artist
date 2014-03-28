@@ -15,7 +15,8 @@ import neat.Painter;
 
 public class PaintProgram extends JPanel{
 	
-	private boolean visual = false;
+	private boolean visual = true;
+	private Controller controller;
 	
 	public PaintProgram(boolean visual) {
 		super();
@@ -23,11 +24,27 @@ public class PaintProgram extends JPanel{
 	}
 
 	public BufferedImage paintPicture(Painter painter, int paintTime){
+		int time = 0;
+		while(time++ < paintTime){
+			double[] in = new double[2];
+			in[0] = controller.getPos().getX();
+			in[1] = controller.getPos().getY();
+			double[] out = painter.getOutput(in);
+			controller.getMove().setX(out[0]);
+			controller.getMove().setY(out[1]);
+			//controller.moveAndPaint(g);	// Call with graphics object!
+		}
+		
+		// Create image from graphics object
 		
 		return randomImage();
 		
 	}
 
+	/**
+	 * Just for testing.
+	 * @return
+	 */
 	private BufferedImage randomImage() {
 		BufferedImage image = null;
 		try {

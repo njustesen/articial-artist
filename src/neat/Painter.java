@@ -11,6 +11,7 @@ public class Painter {
 		this.brain = brain;
 	}
 
+	
 	public double[] getOutput(double[] inputs){
 		
 		double in[] = new double[inputs.length+1];
