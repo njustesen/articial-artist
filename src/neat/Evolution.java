@@ -1,13 +1,8 @@
 package neat;
-import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import paint.PaintProgram;
 
@@ -32,22 +27,39 @@ public class Evolution {
 	
 	public Painter evolvePainter(int paintTime, int iterations){
 		
-//		Population neatPop = new Population(	
-//									popSize /* population size */, 
-//									numInputs /* network inputs */ , 
-//									numOutputs /* network outputs */, 
-//									maxNodes /* max index of nodes */, 
-//									true /* recurrent */, 
-//									0.5 /* probability of connecting two nodes */ );
-//		
-		Population neatPop = new Population(30 /* population size */, 9 /* network inputs */ , 2 /* network outputs */, 5 /* max index of nodes */, true /* recurrent */, 0.5 /* probability of connecting two nodes */ );
-
-		for(int i = 0; i < iterations; i++){
+		Neat.initbase();
+		
+		Population neatPop = new Population(	
+									popSize /* population size */, 
+									numInputs /* network inputs */ , 
+									numOutputs /* network outputs */, 
+									maxNodes /* max index of nodes */, 
+									true /* recurrent */, 
+									0.5 /* probability of connecting two nodes */ );
+	
+		for(int i = 1; i <= iterations; i++){
+			System.out.println("\nTRAIN:");
 			train(neatPop, paintTime);
+			for(Object obj : neatPop.organisms)
+				System.out.println(((Organism)obj).hashCode() + " \tf: " + ((Organism)obj).getFitness());
+			System.out.println("\nASSIGN FITNESS:");
 			assignFitness(neatPop, i);
+			for(Object obj : neatPop.organisms)
+				System.out.println(((Organism)obj).hashCode() + " \tf: " + ((Organism)obj).getFitness());
+			
+			if (i == iterations)
+				break;
+			
+			System.out.println("\nREPRODUCE:");
+			neatPop.epoch(i); // Evolve the population and increment the generation.
+			for(Object obj : neatPop.organisms)
+				System.out.println(((Organism)obj).hashCode() + " \tf: " + ((Organism)obj).getFitness());
 		}
 		
 		Organism best = bestOrganism(neatPop);
+		
+		System.out.println("\nBEST ORGANISM:");
+		System.out.println(best.hashCode() + "\tf: " + best.getFitness());
 		
 		return organismToPainter(best);
 		
@@ -76,7 +88,6 @@ public class Evolution {
 		
 		this.panel.clearPictures();
 		this.panel.addPictures(pictures);
-		this.panel.repaint();
 		
 	}
 
@@ -91,8 +102,6 @@ public class Evolution {
 			((Organism)neatOrgs.get(i)).setFitness(fitness);
 		}
 		 
-		neatPop.epoch(generation + 1); // Evolve the population and increment the generation.
-		
 	}
 	
 	private Painter organismToPainter(Organism organism) {
