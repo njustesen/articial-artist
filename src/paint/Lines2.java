@@ -1,3 +1,5 @@
+package paint;
+
 import javax.swing.*;
 
 public class Lines2 extends JFrame {
