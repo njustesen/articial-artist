@@ -19,7 +19,8 @@ public class Controller {
 		double newY = pos.getY() + move.getY();
 		Vector2D newPos = new Vector2D(newX, newY);
 		
-		// Paint line on g between pos and newPos
+		//Draw stuff
+		g.drawLine((int) pos.getX(), (int) pos.getY(), (int) newX, (int) newY);
 		
 		pos.setX(newX);
 		pos.setY(newY);
@@ -40,6 +41,4 @@ public class Controller {
 	public void setMove(Vector2D move) {
 		this.move = move;
 	}
-
-	
 }
