@@ -18,7 +18,7 @@ public class Painter {
 		in[inputs.length] = -1.0; // Bias
 	  
 	  	// Populate the rest of "inputs" from this organism's status in the simulation.
-	  	for(int i = 0; i < in.length; i++)
+	  	for(int i = 0; i < in.length-1; i++)
 	  		in[i] = inputs[i];
 	 
 	  	// Load these inputs into the neural network.

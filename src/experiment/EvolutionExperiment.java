@@ -10,10 +10,8 @@ public class EvolutionExperiment {
 	 */
 	public static void main(String[] args) {
 		
-		Evolution evolution = new Evolution(2,2,20,6);
-		Painter painter = evolution.evolvePainter(100,10);
-		
-		
+		Evolution evolution = new Evolution(7,6,8,6,250,250,3);
+		Painter painter = evolution.evolvePainter(20000,1000);
 		
 	}
 

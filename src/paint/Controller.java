@@ -25,6 +25,29 @@ public class Controller {
 		pos.setX(newX);
 		pos.setY(newY);
 	}
+	
+
+	public void move(int i, int j, double imgWidth, double imgHeight) {
+		double newX = pos.getX() + move.getX();
+		double newY = pos.getY() + move.getY();
+		if (newX < 0 || newX > imgWidth || newY > imgHeight || newY < 0){
+			//newX = Math.random() * imgWidth;
+			//newY = Math.random() * imgHeight;
+			move.setX(move.getX()*(-1));
+			move.setY(move.getY()*(-1));
+		}
+			
+		if (newX > imgWidth)
+			newX = Math.random() * imgWidth;
+		
+		newX = Math.min(newX, imgWidth);
+		newX = Math.max(0, newX);
+		newY = Math.min(newY, imgHeight);
+		newY = Math.max(0, newY);
+		Vector2D newPos = new Vector2D(newX, newY);
+		pos.setX(newX);
+		pos.setY(newY);
+	}
 
 	public Vector2D getPos() {
 		return pos;
@@ -41,4 +64,5 @@ public class Controller {
 	public void setMove(Vector2D move) {
 		this.move = move;
 	}
+
 }

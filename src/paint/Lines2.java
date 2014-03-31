@@ -10,7 +10,7 @@ public class Lines2 extends JFrame {
     private void initUI() {
         setTitle("Picture");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        add(new Surface());
+       // add(new Surface());
         setSize(350, 250);
         setLocationRelativeTo(null);
     }
