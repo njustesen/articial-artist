@@ -1,4 +1,6 @@
 *.class
+src/gui/data/
+bin/
 
 # Package Files #
 *.jar
