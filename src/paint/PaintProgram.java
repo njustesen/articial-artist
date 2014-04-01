@@ -39,24 +39,24 @@ public class PaintProgram extends JPanel{
 		this.imgHeight = imgHeight;
 		this.color = Color.white;
 		this.brushSize = 1;
-		this.maxBrushSize = imgWidth / 5;
+		this.maxBrushSize = imgWidth / 16;
 	}
 
 	public BufferedImage paintPicture(Painter painter, int paintTime){
 		if (visual) {
-			/*
+			
 			frame = new JFrame();
 			//frame.setSize(1000,700);
 			frame.setPreferredSize(new Dimension(imgWidth,imgHeight));
 			frame.setTitle("Picture");
 			frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-			*/
+			
 			this.surface = new Surface(imgWidth, imgHeight);
-			/*
+			
 			frame.getContentPane().add(surface);  
 			frame.setVisible(true);
 			frame.pack();
-			*/
+			
 		}
 		this.controller = new Controller(new Vector2D(imgWidth/2, imgHeight/2), new Vector2D(0, 0));
 		
@@ -67,40 +67,73 @@ public class PaintProgram extends JPanel{
 			int yFrom = (int) controller.getPos().getY();
 			
 			// Input
-			double[] in = new double[8]; // Remember to set number of inputs
+			double[] in = new double[10]; // Remember to set number of inputs
 			in[0] = downscale(controller.getPos().getX(), imgWidth);
 			in[1] = downscale(controller.getPos().getY(), imgHeight);
-			in[2] = (double)time / (double)paintTime;
-			in[3] = downscale(color.getRed(),255);
-			in[4] = downscale(color.getGreen(),255);
-			in[5] = downscale(color.getBlue(),255);
+			in[2] = controller.getMove().getX();
+			in[3] = controller.getMove().getY();
+			in[4] = (double)time / (double)paintTime;
+			in[5] = downscale(brushSize, maxBrushSize);
 			in[6] = downscale(color.getAlpha(),255);
-			in[7] = downscale(brushSize, maxBrushSize);
+			in[7] = downscale(color.getRed(),255);
+			in[8] = downscale(color.getGreen(),255);
+			in[9] = downscale(color.getBlue(),255);
+			
 			
 			// Get output
 			double[] out = painter.getOutput(in);
 			
-			// Scale output
+			// Extract and scale output
 			double moveX = scaleNegative(out[0]);
 			double moveY = scaleNegative(out[1]);
-			color = new Color((int)upscale(out[2], 255), (int)upscale(out[3], 255), (int)upscale(out[4],255), (int)upscale(out[5], 255));
-			brushSize = upscale(out[6],maxBrushSize);
-			controller.getMove().setX(moveX * 10);
-			controller.getMove().setY(moveY * 10);
-			controller.move(0, 0, imgWidth, imgHeight);
+			int red = (int)upscale(out[2], 255);
+			int green = (int)upscale(out[3], 255);
+			int blue = (int)upscale(out[4], 255);
+			int alpha = (int)upscale(out[5], 255);
+			color = new Color(red, green, blue, alpha);
+			brushSize = upscale(out[6], maxBrushSize);
+			boolean randomRelocate = bool(out[7]);
 			
-			// Do something else? Based on output?
+			// Update
+			controller.getMove().setX(moveX);
+			controller.getMove().setY(moveY);
+			controller.move(0, 0, imgWidth, imgHeight);
 			surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
+			if (controller.getPos().getX() < 0 || controller.getPos().getX() >= imgWidth || 
+					controller.getPos().getY() >= imgHeight || controller.getPos().getY() < 0){
+				
+				if (randomRelocate){
+					controller.getPos().setX(Math.random()*imgWidth);
+					controller.getPos().setY(Math.random()*imgHeight);	
+				} else {
+					controller.getMove().setX(moveX*(-1));
+					controller.getMove().setY(moveY*(-1));
+				}
+			}
+			
+			if (!randomRelocate){
+				controller.getPos().setX(Math.min(controller.getPos().getX(), imgWidth-1));
+				controller.getPos().setY(Math.min(controller.getPos().getY(), imgHeight-1));
+				controller.getPos().setX(Math.max(controller.getPos().getX(), 0));
+				controller.getPos().setY(Math.max(controller.getPos().getY(), 0));
+			}
+			
 		}
 		if (visual){
-			//frame.setVisible(false);
+			frame.setVisible(false);
 		}
 		
 		return surface.getImage();
 		
 	}
+	
+	private boolean bool(double x) {
+		if (x > 0.5)
+			return true;
+		return false;
+	}
 
-	private double bool(double x) {
+	private double bool10(double x) {
 		if (x > 0.5)
 			return 1.0;
 		return 0.0;

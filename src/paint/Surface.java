@@ -29,7 +29,7 @@ class Surface extends JPanel {
 		g.setColor(color);
 		g.setStroke(new BasicStroke((float) brushSize, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
 		g.drawLine((int)x1, (int)y1, (int)x2, (int)y2);
-		//repaint();
+		repaint();
 	}
 
 	@Override

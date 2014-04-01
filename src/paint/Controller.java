@@ -30,28 +30,16 @@ public class Controller {
 	public void move(int i, int j, double imgWidth, double imgHeight) {
 		double newX = pos.getX() + move.getX();
 		double newY = pos.getY() + move.getY();
-		/*
-		if (newX < 0 || newX > imgWidth){
-			move.setX(move.getX()*(-1));
-		}
-		if (newY > imgHeight || newY < 0){
-			move.setY(move.getY()*(-1));
-		}
-		*/
-		if (newX < 0 || newX > imgWidth || newY > imgHeight || newY < 0){
-			move.setX(move.getX()*(-1));
-			move.setY(move.getY()*(-1));
-			//pos.setX(Math.random()*imgWidth);
-			//pos.setY(Math.random()*imgHeight);	
-		}
+
+		//newX = pos.getX() + move.getX();
+		//newY = pos.getY() + move.getY();
 		
-		newX = pos.getX() + move.getX();
-		newY = pos.getY() + move.getY();
+		//System.out.println(newX + " : " + newY);
 		
-		newX = Math.min(newX, imgWidth);
-		newX = Math.max(0, newX);
-		newY = Math.min(newY, imgHeight);
-		newY = Math.max(0, newY);
+//		newX = Math.min(newX, imgWidth);
+//		newX = Math.max(0, newX);
+//		newY = Math.min(newY, imgHeight);
+//		newY = Math.max(0, newY);
 		pos.setX(newX);
 		pos.setY(newY);
 	}
