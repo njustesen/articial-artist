@@ -27,6 +27,8 @@ public class PaintProgram extends JPanel{
 	private int imgHeight;
 	private Color color;
 	private double brushSize;
+	private double lifted;
+	private int maxBrushSize;
 	
 	public PaintProgram(boolean visual, int imgWidth, int imgHeight) {
 		super();
@@ -37,6 +39,7 @@ public class PaintProgram extends JPanel{
 		this.imgHeight = imgHeight;
 		this.color = Color.white;
 		this.brushSize = 1;
+		this.maxBrushSize = imgWidth / 5;
 	}
 
 	public BufferedImage paintPicture(Painter painter, int paintTime){
@@ -59,34 +62,35 @@ public class PaintProgram extends JPanel{
 		
 		int time = 0;
 		while(time++ < paintTime){
-			double[] in = new double[7];
-			
+			// Old position
 			int xFrom = (int) controller.getPos().getX();
 			int yFrom = (int) controller.getPos().getY();
 			
-			// Skaler ned til 0-1
+			// Input
+			double[] in = new double[8]; // Remember to set number of inputs
 			in[0] = downscale(controller.getPos().getX(), imgWidth);
 			in[1] = downscale(controller.getPos().getY(), imgHeight);
 			in[2] = (double)time / (double)paintTime;
 			in[3] = downscale(color.getRed(),255);
 			in[4] = downscale(color.getGreen(),255);
 			in[5] = downscale(color.getBlue(),255);
-			in[6] = downscale(brushSize, 20);
+			in[6] = downscale(color.getAlpha(),255);
+			in[7] = downscale(brushSize, maxBrushSize);
 			
+			// Get output
 			double[] out = painter.getOutput(in);
 			
-			// Ganges måske?
-			// double moveX = upscale(out[0], imgWidth);
-			// double moveY = upscale(out[1], imgHeight);
-			color = new Color((int)upscale(out[2], 255), (int)upscale(out[3], 255), (int)upscale(out[4],255));
-			brushSize = upscale(out[5],20);
+			// Scale output
 			double moveX = scaleNegative(out[0]);
 			double moveY = scaleNegative(out[1]);
+			color = new Color((int)upscale(out[2], 255), (int)upscale(out[3], 255), (int)upscale(out[4],255), (int)upscale(out[5], 255));
+			brushSize = upscale(out[6],maxBrushSize);
 			controller.getMove().setX(moveX * 10);
 			controller.getMove().setY(moveY * 10);
 			controller.move(0, 0, imgWidth, imgHeight);
+			
+			// Do something else? Based on output?
 			surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
-			//controller.move((Graphics2D) surface.getGraphics());	// Call with graphics object!
 		}
 		if (visual){
 			//frame.setVisible(false);
@@ -94,6 +98,12 @@ public class PaintProgram extends JPanel{
 		
 		return surface.getImage();
 		
+	}
+
+	private double bool(double x) {
+		if (x > 0.5)
+			return 1.0;
+		return 0.0;
 	}
 
 	private double scaleNegative(double x) {

@@ -1,5 +1,4 @@
 package neat;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +34,7 @@ public class Evolution {
 	public Painter evolvePainter(int paintTime, int iterations){
 		
 		Neat.initbase();
+		// Set NEAT parameters..
 		Neat.d_mate_singlepoint_prob = "0.9";
 		Neat.d_mutate_random_trait_prob = "0.9";
 		Neat.d_interspecies_mate_rate = "0.9";
@@ -48,10 +48,11 @@ public class Evolution {
 		Neat.d_mutdiff_coeff = "0.9";
 		Neat.d_mate_multipoint_avg_prob = "0.9";
 		Neat.d_linktrait_mut_sig = "7";
-		Neat.d_age_significance = "0.7";
+		Neat.d_age_significance = "2.7";
 		Neat.d_babies_stolen = "0.6";
 		Neat.d_newlink_tries = "4";
 		
+		// Generate population
 		Population neatPop = new Population(	
 									popSize /* population size */, 
 									numInputs /* network inputs */ , 
@@ -59,35 +60,29 @@ public class Evolution {
 									maxNodes /* max index of nodes */, 
 									true /* recurrent */, 
 									0.9 /* probability of connecting two nodes */ );
-	
+		
+		// Run evolution
 		for(int i = 1; i <= iterations; i++){
 			
-			System.out.println("\nTRAIN:");
+			// Paint pictures
 			List<BufferedImage> pictures = paint(neatPop, imgWidth, imgHeight, paintTime);
-			for(Object obj : neatPop.organisms)
-				System.out.println(((Organism)obj).hashCode() + " \tf: " + ((Organism)obj).getFitness());
 			
+			// Show pictures and wait for feedback
 			presentAndRate(neatPop, pictures);
 			
-			System.out.println("\nASSIGN FITNESS:");
-			//assignFitness(neatPop, i);
-			for(Object obj : neatPop.organisms)
-				System.out.println(((Organism)obj).hashCode() + " \tf: " + ((Organism)obj).getFitness());
+			// Assign random fitness
+			assignRandomFitness(neatPop, i);
 			
 			if (i == iterations)
 				break;
 			
-			System.out.println("\nREPRODUCE:");
+			// Evolutionize
 			neatPop.epoch(i); // Evolve the population and increment the generation.
-			for(Object obj : neatPop.organisms)
-				System.out.println(((Organism)obj).hashCode() + " \tf: " + ((Organism)obj).getFitness());
+
 		}
 		
+		// Return best painter
 		Organism best = bestOrganism(neatPop);
-		
-		System.out.println("\nBEST ORGANISM:");
-		System.out.println(best.hashCode() + "\tf: " + best.getFitness());
-		
 		return organismToPainter(best);
 		
 	}
@@ -98,12 +93,11 @@ public class Evolution {
 		panel.addPictures(pictures);
 		Vector neatOrgs = neatPop.getOrganisms();
 		
-		for(Object org : neatOrgs){
-			
+		// Reset fitness
+		for(Object org : neatOrgs)
 			((Organism)org).setFitness(0);
-			
-		}
 		
+		// While champions not selected keep showing paintings
 		while(panel.getSelected().size() < champions){
 			
 			panel.repaint();
@@ -116,22 +110,22 @@ public class Evolution {
 			
 		}
 		
+		// Wait 1000 ms
 		panel.repaint();
-		
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
+		// Give fitness to selected pictures
+		int i = 0;
 		for(BufferedImage goodPic : panel.getSelected()){
 			
 			int idx = panel.getPictures().indexOf(goodPic);
-			((Organism)neatOrgs.get(idx)).setFitness(1);
+			((Organism)neatOrgs.get(idx)).setFitness(panel.selected.size()+1-i);
 			
 		}
-		
-		
 		
 	}
 
@@ -161,7 +155,7 @@ public class Evolution {
 		
 	}
 
-	private void assignFitness(Population neatPop, int generation) {
+	private void assignRandomFitness(Population neatPop, int generation) {
 		
 		Vector neatOrgs = neatPop.getOrganisms();
 		 

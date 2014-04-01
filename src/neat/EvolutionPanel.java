@@ -29,7 +29,7 @@ public class EvolutionPanel extends JPanel implements MouseInputListener {
 		this.pictures = new ArrayList<BufferedImage>();
 		this.selected = new ArrayList<BufferedImage>();
 		JFrame f = new JFrame();
-		this.width = 1200;
+		this.width = 1300;
 		this.height = 700;
         f.setSize(width, height);
         f.setPreferredSize(new Dimension(width, height));
