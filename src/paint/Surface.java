@@ -31,6 +31,13 @@ class Surface extends JPanel {
 		g.drawLine((int)x1, (int)y1, (int)x2, (int)y2);
 		repaint();
 	}
+	
+	public void drawArc(double x, double y, double width, double height, double startAngle, double arcAngle, Color color, double brushSize) {
+		g.setColor(color);
+		g.setStroke(new BasicStroke((float) brushSize, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL));
+		g.drawArc((int) x, (int) y, (int) width, (int) height, (int) startAngle, (int) arcAngle);
+		repaint();
+	}
 
 	@Override
 	public void repaint(){

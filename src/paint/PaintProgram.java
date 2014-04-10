@@ -41,7 +41,7 @@ public class PaintProgram extends JPanel{
 		this.color = Color.white;
 		this.brushSize = 1;
 		this.maxBrushSize = imgWidth / 16;
-		this.liftLimit = 0.5;
+		this.liftLimit = 0.9;
 	}
 
 	public BufferedImage paintPicture(Painter painter, int paintTime){
@@ -81,39 +81,47 @@ public class PaintProgram extends JPanel{
 			in[8] = downscale(color.getGreen(),255);
 			in[9] = downscale(color.getBlue(),255);
 			
-			
 			// Get output
 			double[] out = painter.getOutput(in);
-			
+
 			if (time==1){
+				
 				double reposX = out[8];
 				double reposY = out[9];
 				controller.getPos().setX(reposX*imgWidth);
 				controller.getPos().setY(reposY*imgHeight);	
 				xFrom = (int) controller.getPos().getX();
 				yFrom = (int) controller.getPos().getY();
-			} else {
 			
+			} else {
+
 				// Extract and scale output
-				double moveX = scaleNegative(out[0] * 2);
-				double moveY = scaleNegative(out[1] * 2);
+				double moveX = controller.getMove().getX() + scaleNegative(out[0]);
+				double moveY = controller.getMove().getY() + scaleNegative(out[1]);
 				int red = (int)upscale(out[2], 255);
 				int green = (int)upscale(out[3], 255);
 				int blue = (int)upscale(out[4], 255);
 				int alpha = (int)upscale(out[5], 255);
+				//alpha = 255;
 				color = new Color(red, green, blue, alpha);
 				brushSize = upscale(out[6], maxBrushSize);
 				boolean lift = out[7] > liftLimit;
 				double reposX = out[8];
 				double reposY = out[9];
+				reposX = Math.random();
+				reposY = Math.random();
 				
 				// Update
-				controller.getMove().setX(moveX);
-				controller.getMove().setY(moveY);
+				controller.getMove().setX(moveX/2);
+				controller.getMove().setY(moveY/2);
 				controller.move(0, 0, imgWidth, imgHeight);
-				surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
-	
-				if (lift){
+				//surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
+				surface.drawArc(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
+
+				if (lift || 
+						(controller.getPos().getX() < 0 || controller.getPos().getX() >= imgWidth || 
+						controller.getPos().getY() >= imgHeight || controller.getPos().getY() < 0)){
+					//if (lift){
 					controller.getPos().setX(reposX*imgWidth);
 					controller.getPos().setY(reposY*imgHeight);	
 				}
