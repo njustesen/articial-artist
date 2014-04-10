@@ -84,8 +84,8 @@ public class PaintProgram extends JPanel{
 			double[] out = painter.getOutput(in);
 			
 			// Extract and scale output
-			double moveX = scaleNegative(out[0]);
-			double moveY = scaleNegative(out[1]);
+			double moveX = controller.getMove().getX() + scaleNegative(out[0]);
+			double moveY = controller.getMove().getY() + scaleNegative(out[0]);
 			int red = (int)upscale(out[2], 255);
 			int green = (int)upscale(out[3], 255);
 			int blue = (int)upscale(out[4], 255);
@@ -98,7 +98,8 @@ public class PaintProgram extends JPanel{
 			controller.getMove().setX(moveX);
 			controller.getMove().setY(moveY);
 			controller.move(0, 0, imgWidth, imgHeight);
-			surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
+			//surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
+			surface.drawArc(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), 10, 10, color, brushSize);
 			if (controller.getPos().getX() < 0 || controller.getPos().getX() >= imgWidth || 
 					controller.getPos().getY() >= imgHeight || controller.getPos().getY() < 0){
 				
