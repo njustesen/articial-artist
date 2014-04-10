@@ -29,6 +29,7 @@ public class PaintProgram extends JPanel{
 	private double brushSize;
 	private double lifted;
 	private int maxBrushSize;
+	private double liftLimit;
 	
 	public PaintProgram(boolean visual, int imgWidth, int imgHeight) {
 		super();
@@ -40,6 +41,7 @@ public class PaintProgram extends JPanel{
 		this.color = Color.white;
 		this.brushSize = 1;
 		this.maxBrushSize = imgWidth / 16;
+		this.liftLimit = 0.5;
 	}
 
 	public BufferedImage paintPicture(Painter painter, int paintTime){
@@ -83,39 +85,38 @@ public class PaintProgram extends JPanel{
 			// Get output
 			double[] out = painter.getOutput(in);
 			
-			// Extract and scale output
-			double moveX = scaleNegative(out[0]);
-			double moveY = scaleNegative(out[1]);
-			int red = (int)upscale(out[2], 255);
-			int green = (int)upscale(out[3], 255);
-			int blue = (int)upscale(out[4], 255);
-			int alpha = (int)upscale(out[5], 255);
-			color = new Color(red, green, blue, alpha);
-			brushSize = upscale(out[6], maxBrushSize);
-			boolean randomRelocate = bool(out[7]);
+			if (time==1){
+				double reposX = out[8];
+				double reposY = out[9];
+				controller.getPos().setX(reposX*imgWidth);
+				controller.getPos().setY(reposY*imgHeight);	
+				xFrom = (int) controller.getPos().getX();
+				yFrom = (int) controller.getPos().getY();
+			} else {
 			
-			// Update
-			controller.getMove().setX(moveX);
-			controller.getMove().setY(moveY);
-			controller.move(0, 0, imgWidth, imgHeight);
-			surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
-			if (controller.getPos().getX() < 0 || controller.getPos().getX() >= imgWidth || 
-					controller.getPos().getY() >= imgHeight || controller.getPos().getY() < 0){
+				// Extract and scale output
+				double moveX = scaleNegative(out[0] * 2);
+				double moveY = scaleNegative(out[1] * 2);
+				int red = (int)upscale(out[2], 255);
+				int green = (int)upscale(out[3], 255);
+				int blue = (int)upscale(out[4], 255);
+				int alpha = (int)upscale(out[5], 255);
+				color = new Color(red, green, blue, alpha);
+				brushSize = upscale(out[6], maxBrushSize);
+				boolean lift = out[7] > liftLimit;
+				double reposX = out[8];
+				double reposY = out[9];
 				
-				if (randomRelocate){
-					controller.getPos().setX(Math.random()*imgWidth);
-					controller.getPos().setY(Math.random()*imgHeight);	
-				} else {
-					controller.getMove().setX(moveX*(-1));
-					controller.getMove().setY(moveY*(-1));
+				// Update
+				controller.getMove().setX(moveX);
+				controller.getMove().setY(moveY);
+				controller.move(0, 0, imgWidth, imgHeight);
+				surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
+	
+				if (lift){
+					controller.getPos().setX(reposX*imgWidth);
+					controller.getPos().setY(reposY*imgHeight);	
 				}
-			}
-			
-			if (!randomRelocate){
-				controller.getPos().setX(Math.min(controller.getPos().getX(), imgWidth-1));
-				controller.getPos().setY(Math.min(controller.getPos().getY(), imgHeight-1));
-				controller.getPos().setX(Math.max(controller.getPos().getX(), 0));
-				controller.getPos().setY(Math.max(controller.getPos().getY(), 0));
 			}
 			
 		}
@@ -127,6 +128,11 @@ public class PaintProgram extends JPanel{
 		
 	}
 	
+	private int average(double[] out) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	private boolean bool(double x) {
 		if (x > 0.5)
 			return true;

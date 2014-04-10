@@ -48,6 +48,16 @@
    
    /** If  too high, leads to delta coding process. */
 	  int highest_last_changed;
+
+		public int inputNodes;
+		
+		public int outputNodes;
+		
+		public int nodesMax;
+		
+		public boolean recurrent;
+
+		public double linkProp;
    
 	   public Vector getOrganisms() {
 		 return organisms;
@@ -260,12 +270,12 @@
 	  // Then, within each Species, mark for death 
 	  // those below survival_thresh * average
 	  
-		 itr_specie = species.iterator();
-		 while (itr_specie.hasNext()) 
-		 {
-			_specie = ((Species) itr_specie.next());
-			_specie.adjust_fitness();
-		 }
+//		 itr_specie = species.iterator();
+//		 while (itr_specie.hasNext()) 
+//		 {
+//			_specie = ((Species) itr_specie.next());
+//			_specie.adjust_fitness();
+//		 }
 	  
 	  //Go through the organisms and add up their fitnesses to compute the
 	  //overall average
@@ -278,7 +288,6 @@
 			total += _organism.fitness;
 		 }
 	  
-	  
 		 total_organisms = organisms.size();
 		 overall_average = total / total_organisms;
 	  
@@ -289,7 +298,8 @@
 		 while (itr_organism.hasNext()) 
 		 {
 			Organism _organism = ((Organism) itr_organism.next());
-			_organism.expected_offspring = _organism.fitness / overall_average;
+			_organism.expected_offspring = _organism.fitness;
+			// EDIT: was fitness / average
 		 }
 	  
 	  //Now add those offspring up within each Species to get the number of
@@ -976,6 +986,11 @@
 	   public Population(int size,int i,int o, int nmax, boolean r, double linkprob) 
 	  {
 	  
+		   this.inputNodes = i;
+		   this.outputNodes = o;
+		   this.nodesMax = nmax;
+		   this.recurrent = r;
+		   this.linkProp = linkprob;
 	  
 		 String mask4 = "0000";
 		 DecimalFormat fmt4 = new DecimalFormat(mask4);
