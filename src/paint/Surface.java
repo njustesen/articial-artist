@@ -22,7 +22,7 @@ class Surface extends JPanel {
 		g = this.image.createGraphics();
 		g.setColor( Color.white );
 		g.fillRect(0, 0, width, height);
-		//g.dispose();
+		
 	}
     
 	public void drawLine(double x1, double y1, double x2, double y2, Color color, double brushSize) {

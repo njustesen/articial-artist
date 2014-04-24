@@ -298,7 +298,7 @@
 		 while (itr_organism.hasNext()) 
 		 {
 			Organism _organism = ((Organism) itr_organism.next());
-			_organism.expected_offspring = _organism.fitness;
+			_organism.expected_offspring = _organism.fitness / overall_average;
 			// EDIT: was fitness / average
 		 }
 	  

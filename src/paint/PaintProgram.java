@@ -40,12 +40,12 @@ public class PaintProgram extends JPanel{
 		this.imgHeight = imgHeight;
 		this.color = Color.white;
 		this.brushSize = 1;
-		this.maxBrushSize = imgWidth / 16;
+		this.maxBrushSize = imgWidth / 4;
 		this.liftLimit = 0.9;
 	}
 
 	public BufferedImage paintPicture(Painter painter, int paintTime){
-		if (visual) {
+		//if (visual) {
 			
 			frame = new JFrame();
 			//frame.setSize(1000,700);
@@ -56,10 +56,10 @@ public class PaintProgram extends JPanel{
 			this.surface = new Surface(imgWidth, imgHeight);
 			
 			frame.getContentPane().add(surface);  
-			frame.setVisible(true);
+			frame.setVisible(visual);
 			frame.pack();
 			
-		}
+		//}
 		this.controller = new Controller(new Vector2D(imgWidth/2, imgHeight/2), new Vector2D(0, 0));
 		
 		int time = 0;
@@ -124,7 +124,7 @@ public class PaintProgram extends JPanel{
 					//if (lift){
 					controller.getPos().setX(reposX);
 					controller.getPos().setY(reposY);	
-					System.out.println(reposX + " " + reposY);
+					//System.out.println(reposX + " " + reposY);
 					controller.getMove().setX(0);
 					controller.getMove().setY(0);
 					//System.out.println(controller.getPos().getX()+ " " + controller.getPos().getY());
@@ -133,9 +133,10 @@ public class PaintProgram extends JPanel{
 			}
 			
 		}
-		if (visual){
+		//if (visual){
 			frame.setVisible(false);
-		}
+			frame.dispose();
+		//}
 		
 		return surface.getImage();
 		

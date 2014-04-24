@@ -17,7 +17,7 @@ import paint.PaintProgram;
 
 import jneat.*;
 
-public class Evolution {
+public class NEvolution {
 	
 	int numOutputs;
 	int numInputs;
@@ -29,8 +29,10 @@ public class Evolution {
 	private int champions;
 	private int novelty;
 	private BufferedImage goalImage;
+	private List<Organism> Npopulation;
+	private int nextId = 90000;
 
-	public Evolution(int numInputs, int numOutputs, int popSize, int maxNodes, int picWidth, int picHeight, int champions, int novelty, BufferedImage goal){
+	public NEvolution(int numInputs, int numOutputs, int popSize, int maxNodes, int picWidth, int picHeight, int champions, int novelty, BufferedImage goal){
 		super();
 		this.numInputs = numInputs;
 		this.numOutputs = numOutputs;
@@ -51,45 +53,29 @@ public class Evolution {
 	public Painter evolvePainter(int paintTime, int iterations, boolean goal){
 		
 		Neat.initbase();
-		// Set NEAT parameters..
-		Neat.p_dropoff_age = 100000;
-//		Neat.d_mate_singlepoint_prob = "1000";
-//		Neat.d_mutate_random_trait_prob = "1000";
-//		Neat.d_interspecies_mate_rate = "1000";
-//		Neat.d_mutate_add_link_prob = "1000";
-//		Neat.d_mate_multipoint_avg_prob = "1000";
-//		Neat.d_mutate_add_node_prob = "1000";
-//		Neat.d_mutate_link_trait_prob = "1000";
-//		Neat.d_mutate_gene_reenable_prob = "1000";
-//		Neat.d_mutate_random_trait_prob = "1000";
-//		Neat.d_mutate_toggle_enable_prob = "1000";
-//		Neat.d_mutdiff_coeff = "1000";
-//		Neat.d_mate_multipoint_avg_prob = "1000";
-//		Neat.d_linktrait_mut_sig = "1000";
-//		//Neat.d_age_significance = "10";
-//		//Neat.d_babies_stolen = "10";
-//		Neat.d_newlink_tries = "1000";
 		
 		// Generate population
-		Population neatPop = new Population(	
+		Population pop = new Population(	
 									popSize /* population size */, 
 									numInputs /* network inputs */ , 
 									numOutputs /* network outputs */, 
 									maxNodes /* max index of nodes */, 
 									true /* recurrent */, 
-									100 /* probability of connecting two nodes */ );
+									0.5 /* probability of connecting two nodes */ );
+		
+		Npopulation = new ArrayList<Organism>(pop.organisms);
 		
 		// Run evolution
 		for(int i = 1; i <= iterations; i++){
 			
 			// Paint pictures
-			List<BufferedImage> pictures = paint(neatPop, imgWidth, imgHeight, paintTime);
+			List<BufferedImage> pictures = paint(Npopulation, imgWidth, imgHeight, paintTime);
 			
 			// Show pictures and wait for feedback
 			if (goal)
-				presentAndCompare(neatPop, pictures);
+				presentAndCompare(Npopulation, pictures);
 			else
-				presentAndRate(neatPop, pictures);
+				presentAndRate(Npopulation, pictures);
 			// Assign random fitness
 			//assignRandomFitness(neatPop, i);
 			
@@ -98,42 +84,41 @@ public class Evolution {
 			
 			// Evolutionize
 			//neatPop.epoch(i); // Evolve the population and increment the generation.
-			if (!goal)
-				neatPop = epoch(neatPop, i);
+			//if (!goal)
+			epoch(Npopulation, i);
 			
 			//for(int e = 0; e<10; e++){
-			neatPop.epoch(i);
+			//pop.epoch(i);
 			//System.out.println(neatPop.getOrganisms().size() + " organisms. ");
 			//}
 			
 		}
 		
 		// Return best painter
-		Organism best = bestOrganism(neatPop);
+		Organism best = bestOrganism(Npopulation);
 		return organismToPainter(best);
 		
 	}
 
-	private void presentAndCompare(Population neatPop,
+	private void presentAndCompare(List<Organism> pop,
 			List<BufferedImage> pictures) {
 		
 		panel.clearPictures();
 		panel.addPictures(pictures);
-		Vector neatOrgs = neatPop.getOrganisms();
 		
 		// Reset fitness
-		for(Object org : neatOrgs)
-			((Organism)org).setFitness(0);
+		for(Organism org : pop)
+			org.setFitness(0);
 		
 		// Give fitness to selected pictures
-		List<Organism> rated = new ArrayList<Organism>();
+		List<BufferedImage> rated = new ArrayList<BufferedImage>();
 		
 		double lowestFitness = Double.MAX_VALUE;
 		double bestFitness = Double.MIN_VALUE;
 		int lowestIdx = 0;
 		int bestIdx = 0;
 		
-		while(rated.size()<neatOrgs.size()){
+		while(rated.size()<pop.size()){
 			for(BufferedImage picture : pictures){
 				
 				if (rated.contains(picture))
@@ -151,9 +136,9 @@ public class Evolution {
 					bestIdx = idx;
 				}
 			}
-			double rating = (double)rated.size() / (double)neatOrgs.size();
-			((Organism)neatOrgs.get(lowestIdx)).setFitness(rating);
-			rated.add(((Organism)neatOrgs.get(lowestIdx)));
+			double rating = (double)rated.size() / (double)pop.size();
+			pop.get(lowestIdx).setFitness(rating);
+			rated.add(pictures.get(lowestIdx));
 			lowestFitness = Double.MAX_VALUE;
 		}
 		
@@ -161,48 +146,51 @@ public class Evolution {
 		
 	}
 
-	private Population epoch(Population neatPop, int generation) {
+	private List<Organism> epoch(List<Organism> pop, int generation) {
 		
 		// Kill bad artists
-		Vector neatOrgs = neatPop.getOrganisms();
-		for(int i=0;i<neatOrgs.size();i++){
-			
-			Organism org = (Organism)neatOrgs.get(i);
-			if (org.getFitness() != 1){
+		List<Organism> killed = new ArrayList<Organism>();
+		for(Organism org : pop){
+			if (org.getFitness() < 0.5){
 				org.setEliminate(true);
+				killed.add(org);
 			}
 		}
 		
-		// Spawn novel artists
-		/*
-		Population newPop = new Population(novelty, 
-				numInputs,
-				numOutputs,
-				maxNodes,
-				true,
-				0.9
-				);
-		newPop.epoch(1);
-		Vector newOrgs = newPop.getOrganisms();
-		for(int i=0;i<newOrgs.size();i++){
-			
-			Organism org = (Organism)newOrgs.get(i);
-			org.setFitness(0.2);
+		for(Organism kill : killed){
+			pop.remove(kill);
 		}
-		neatPop.getSpecies().addAll(newPop.getSpecies());
-		neatPop.getOrganisms().addAll(newPop.getOrganisms());
-		*/
-		return neatPop;
+		
+		// Reproduce
+		List<Organism> babies = new ArrayList<Organism>();
+		for(Organism org : pop){
+			
+			int idx = -1;
+			while(idx == -1 || idx == pop.indexOf(org)){
+				idx = (int) Math.floor(Math.random() * pop.size());
+			}
+			
+			Organism other = pop.get(idx);
+			
+			Genome genome = org.getGenome().mate_multipoint(other.getGenome(), nextId++, org.getFitness(), other.getFitness());
+			Organism child = new Organism(0.5, genome, org.getGeneration()+1);
+			babies.add(child);
+		}
+		
+		for(Organism baby : babies){
+			pop.add(baby);
+		}
+		
+		return pop;
 	}
 
-	private void presentAndRate(Population neatPop, List<BufferedImage> pictures) {
+	private void presentAndRate(List<Organism> pop, List<BufferedImage> pictures) {
 		
 		panel.clearPictures();
 		panel.addPictures(pictures);
-		Vector neatOrgs = neatPop.getOrganisms();
 		
 		// Reset fitness
-		for(Object org : neatOrgs)
+		for(Organism org : pop)
 			((Organism)org).setFitness(0);
 		
 		// While champions not selected keep showing paintings
@@ -230,22 +218,21 @@ public class Evolution {
 		for(BufferedImage goodPic : panel.getSelected()){
 			
 			int idx = panel.getPictures().indexOf(goodPic);
-			((Organism)neatOrgs.get(idx)).setFitness(1);
+			pop.get(idx).setFitness(1);
 			
 		}
 		
 	}
 
-	private List<BufferedImage> paint(Population neatPop, int width, int height, int paintTime) {
+	private List<BufferedImage> paint(List<Organism> neatPop, int width, int height, int paintTime) {
 		
-		Vector neatOrgs = neatPop.getOrganisms();
 		PaintProgram program = new PaintProgram(false, width, height); 
 		List<BufferedImage> images = new ArrayList<BufferedImage>();
 		
 		//for(int i=0;i<popSize;i++){
-		for(int i=0;i<neatPop.getOrganisms().size();i++){
+		for(Organism org : neatPop){
 			// Extract the neural network from the jNEAT organism.
-			Painter painter = organismToPainter((Organism)neatOrgs.get(i));
+			Painter painter = organismToPainter(org);
 			
 			images.add(program.paintPicture(painter, paintTime));
 			
@@ -281,19 +268,16 @@ public class Evolution {
 		
 	}
 
-	private Organism bestOrganism(Population neatPop) {
+	private Organism bestOrganism(List<Organism> neatPop) {
 		
-		Vector neatOrgs = neatPop.getOrganisms();
-		 
 		double bestFitness = Double.MIN_VALUE;
 		Organism mostFit = null;
 		
-		for(int i=0;i<neatOrgs.size();i++){
+		for(Organism org : neatPop){
 			
-			Organism organism = (Organism)neatOrgs.get(i);
-			if (organism.getFitness() > bestFitness){
-				bestFitness = organism.getFitness();
-				mostFit = organism;
+			if (org.getFitness() > bestFitness){
+				bestFitness = org.getFitness();
+				mostFit = org;
 			}
 		}
 		return mostFit;
