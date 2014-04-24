@@ -203,8 +203,10 @@
 					 _node.last_activation2 = _node.last_activation;
 					 _node.last_activation = _node.activation;
 				  
-					 if (_node.ftype == NeatConstant.SIGMOID)
-						_node.activation = NeatRoutine.fsigmoid(_node.activesum, 4.924273, 2.4621365);
+					 if (_node.ftype == NeatConstant.SIGMOID){
+						//_node.activation = NeatRoutine.fsigmoid(_node.activesum, 4.924273, 2.4621365);
+						_node.activation = NeatRoutine.fsigmoid(_node.activesum, 0.924273, 2.4621365);
+					 }
 					 _node.activation_count += 1.0;
 				  }
 			   }

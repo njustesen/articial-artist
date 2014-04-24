@@ -102,7 +102,7 @@ public class PaintProgram extends JPanel{
 				int green = (int)upscale(out[3], 255);
 				int blue = (int)upscale(out[4], 255);
 				int alpha = (int)upscale(out[5], 255);
-				//alpha = 255;
+				alpha = 255;
 				color = new Color(red, green, blue, alpha);
 				brushSize = upscale(out[6], maxBrushSize);
 				boolean lift = out[7] > liftLimit;
@@ -110,18 +110,22 @@ public class PaintProgram extends JPanel{
 				double reposY = out[9];
 				reposX = Math.random();
 				reposY = Math.random();
+				double angleA = upscale(scaleNegative(reposX),imgWidth/10);
+				double angleB = upscale(scaleNegative(reposX),imgWidth/10);
+				
 				
 				// Update
 				controller.getMove().setX(moveX/2);
 				controller.getMove().setY(moveY/2);
 				controller.move(0, 0, imgWidth, imgHeight);
 				//surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
-				surface.drawArc(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
+				surface.drawArc(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), angleA, angleB, color, brushSize);
 
 				if (lift || 
 						(controller.getPos().getX() < 0 || controller.getPos().getX() >= imgWidth || 
 						controller.getPos().getY() >= imgHeight || controller.getPos().getY() < 0)){
 					//if (lift){
+					
 					controller.getPos().setX(reposX*imgWidth);
 					controller.getPos().setY(reposY*imgHeight);	
 				}

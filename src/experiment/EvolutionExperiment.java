@@ -13,14 +13,14 @@ public class EvolutionExperiment {
 		Evolution evolution = new Evolution(
 				10, 	/* Number of inputs */
 				10, 	/* Number of outputs */
-				4, 		/* Population size */
-				32,		/* Max. number of nodes */
-				400,	/* Picture width */
-				400,	/* Picture height */
+				8, 		/* Population size */
+				64,		/* Max. number of nodes */
+				200,	/* Picture width */
+				200,	/* Picture height */
 				2 		/* Number of pictures selected (champions) */
 				); 
 		Painter painter = evolution.evolvePainter(
-				3000,	/* Paint time */
+				1000,	/* Paint time */
 				1000);	/* Iterations in evolution */
 		
 	}

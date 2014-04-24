@@ -35,22 +35,22 @@ public class Evolution {
 		
 		Neat.initbase();
 		// Set NEAT parameters..
-//		Neat.d_mate_singlepoint_prob = "0.9";
-//		Neat.d_mutate_random_trait_prob = "0.9";
-//		Neat.d_interspecies_mate_rate = "0.9";
-//		Neat.d_mutate_add_link_prob = "0.9";
-//		Neat.d_mate_multipoint_avg_prob = "0.9";
-//		Neat.d_mutate_add_node_prob = "0.9";
-//		Neat.d_mutate_link_trait_prob = "0.9";
-//		Neat.d_mutate_gene_reenable_prob = "0.9";
-//		Neat.d_mutate_random_trait_prob = "0.9";
-//		Neat.d_mutate_toggle_enable_prob = "0.9";
-//		Neat.d_mutdiff_coeff = "0.9";
-//		Neat.d_mate_multipoint_avg_prob = "0.9";
-//		Neat.d_linktrait_mut_sig = "7";
-//		Neat.d_age_significance = "2.7";
-//		Neat.d_babies_stolen = "0.6";
-//		Neat.d_newlink_tries = "4";
+//		Neat.d_mate_singlepoint_prob = "10";
+//		Neat.d_mutate_random_trait_prob = "10";
+//		Neat.d_interspecies_mate_rate = "10";
+//		Neat.d_mutate_add_link_prob = "10";
+//		Neat.d_mate_multipoint_avg_prob = "10";
+//		Neat.d_mutate_add_node_prob = "10";
+//		Neat.d_mutate_link_trait_prob = "10";
+//		Neat.d_mutate_gene_reenable_prob = "10";
+//		Neat.d_mutate_random_trait_prob = "10";
+//		Neat.d_mutate_toggle_enable_prob = "10";
+//		Neat.d_mutdiff_coeff = "10";
+//		Neat.d_mate_multipoint_avg_prob = "10";
+//		Neat.d_linktrait_mut_sig = "10";
+//		//Neat.d_age_significance = "10";
+//		//Neat.d_babies_stolen = "10";
+//		Neat.d_newlink_tries = "10";
 		
 		// Generate population
 		Population neatPop = new Population(	
@@ -78,7 +78,8 @@ public class Evolution {
 			
 			// Evolutionize
 			//neatPop.epoch(i); // Evolve the population and increment the generation.
-			epoch(neatPop, i);
+			neatPop = epoch(neatPop, i);
+			neatPop.epoch(1);
 			
 		}
 		
@@ -88,7 +89,7 @@ public class Evolution {
 		
 	}
 
-	private void epoch(Population neatPop, int generation) {
+	private Population epoch(Population neatPop, int generation) {
 		
 		Vector neatOrgs = neatPop.getOrganisms();
 		List<Organism> survivors = new ArrayList<Organism>();
@@ -97,38 +98,35 @@ public class Evolution {
 			
 			// Extract the neural network from the jNEAT organism.
 			Organism org = (Organism)neatOrgs.get(i);
-			if (org.getFitness() == 1){
-				survivors.add(org);
+			if (org.getFitness() != 1){
+				org.setEliminate(true);
 			}
 		}
-	
-		int newBorns = neatOrgs.size() - survivors.size();
-		neatPop.getOrganisms().clear();
-		for(Organism org : survivors){
-			neatPop.getOrganisms().add(org);
+		/*
+		List<Organism> removed = new ArrayList<Organism>();
+		for(Object org : neatPop.getOrganisms()){
+			if (((Organism) org).getFitness() != 1){
+				removed.add((Organism) org);
+			}
 		}
-		
-		Population newBornPopulation = new Population(	
-				newBorns /* population size */, 
-				neatPop.inputNodes /* network inputs */ , 
-				neatPop.outputNodes /* network outputs */, 
-				neatPop.nodesMax /* max index of nodes */, 
-				neatPop.recurrent /* recurrent */, 
-				neatPop.linkProp /* probability of connecting two nodes */ );
-		
-		Vector newNeatOrgs = newBornPopulation.getOrganisms();
-		
-		for(int i=0;i<newNeatOrgs.size();i++){
-			
-			// Extract the neural network from the jNEAT organism.
-			Organism org = (Organism)newNeatOrgs.get(i);
-			org.setFitness(0.4);
-			neatPop.getOrganisms().add(org);
+		for(Organism remove : removed){
+			neatPop.getOrganisms().remove(remove);
 			
 		}
 		
-		neatPop.epoch(generation);
-		
+		Population newPop = new Population(	
+		//		neatOrgs.size() - removed.size() /* population size *///, 
+		//		neatPop.inputNodes /* network inputs */ , 
+		//		neatPop.outputNodes /* network outputs */, 
+		//		neatPop.nodesMax /* max index of nodes */, 
+		//		neatPop.recurrent /* recurrent */, 
+		//		neatPop.linkProp /* probability of connecting two nodes */ );
+/*
+		for(Object org : newPop.getOrganisms()){
+			((Organism)org).setFitness(0.1);
+		}
+		*/
+		return neatPop;
 	}
 
 	private void presentAndRate(Population neatPop, List<BufferedImage> pictures) {
@@ -178,7 +176,7 @@ public class Evolution {
 		PaintProgram program = new PaintProgram(true, width, height); 
 		List<BufferedImage> images = new ArrayList<BufferedImage>();
 		
-		for(int i=0;i<neatOrgs.size();i++){
+		for(int i=0;i<popSize;i++){
 			
 			// Extract the neural network from the jNEAT organism.
 			Painter painter = organismToPainter((Organism)neatOrgs.get(i));
