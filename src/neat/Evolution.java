@@ -18,8 +18,9 @@ public class Evolution {
 	private int imgWidth;
 	private int imgHeight;
 	private int champions;
+	private int novelty;
 
-	public Evolution(int numInputs, int numOutputs, int popSize, int maxNodes, int picWidth, int picHeight, int champions){
+	public Evolution(int numInputs, int numOutputs, int popSize, int maxNodes, int picWidth, int picHeight, int champions, int novelty){
 		super();
 		this.numInputs = numInputs;
 		this.numOutputs = numOutputs;
@@ -28,6 +29,7 @@ public class Evolution {
 		this.imgWidth = picWidth;
 		this.imgHeight = picHeight;
 		this.champions = champions;
+		this.novelty = novelty;
 		panel = new EvolutionPanel();
 	}
 	
@@ -35,22 +37,22 @@ public class Evolution {
 		
 		Neat.initbase();
 		// Set NEAT parameters..
-//		Neat.d_mate_singlepoint_prob = "10";
-//		Neat.d_mutate_random_trait_prob = "10";
-//		Neat.d_interspecies_mate_rate = "10";
-//		Neat.d_mutate_add_link_prob = "10";
-//		Neat.d_mate_multipoint_avg_prob = "10";
-//		Neat.d_mutate_add_node_prob = "10";
-//		Neat.d_mutate_link_trait_prob = "10";
-//		Neat.d_mutate_gene_reenable_prob = "10";
-//		Neat.d_mutate_random_trait_prob = "10";
-//		Neat.d_mutate_toggle_enable_prob = "10";
-//		Neat.d_mutdiff_coeff = "10";
-//		Neat.d_mate_multipoint_avg_prob = "10";
-//		Neat.d_linktrait_mut_sig = "10";
-//		//Neat.d_age_significance = "10";
-//		//Neat.d_babies_stolen = "10";
-//		Neat.d_newlink_tries = "10";
+		Neat.d_mate_singlepoint_prob = "1000";
+		Neat.d_mutate_random_trait_prob = "1000";
+		Neat.d_interspecies_mate_rate = "1000";
+		Neat.d_mutate_add_link_prob = "1000";
+		Neat.d_mate_multipoint_avg_prob = "1000";
+		Neat.d_mutate_add_node_prob = "1000";
+		Neat.d_mutate_link_trait_prob = "1000";
+		Neat.d_mutate_gene_reenable_prob = "1000";
+		Neat.d_mutate_random_trait_prob = "1000";
+		Neat.d_mutate_toggle_enable_prob = "1000";
+		Neat.d_mutdiff_coeff = "1000";
+		Neat.d_mate_multipoint_avg_prob = "1000";
+		Neat.d_linktrait_mut_sig = "1000";
+		//Neat.d_age_significance = "10";
+		//Neat.d_babies_stolen = "10";
+		Neat.d_newlink_tries = "1000";
 		
 		// Generate population
 		Population neatPop = new Population(	
@@ -59,7 +61,7 @@ public class Evolution {
 									numOutputs /* network outputs */, 
 									maxNodes /* max index of nodes */, 
 									true /* recurrent */, 
-									0.9 /* probability of connecting two nodes */ );
+									100 /* probability of connecting two nodes */ );
 		
 		// Run evolution
 		for(int i = 1; i <= iterations; i++){
@@ -79,7 +81,10 @@ public class Evolution {
 			// Evolutionize
 			//neatPop.epoch(i); // Evolve the population and increment the generation.
 			neatPop = epoch(neatPop, i);
-			neatPop.epoch(1);
+			
+			//for(int e = 0; e<10; e++){
+				neatPop.epoch(1);
+			//}
 			
 		}
 		
@@ -91,40 +96,34 @@ public class Evolution {
 
 	private Population epoch(Population neatPop, int generation) {
 		
+		// Kill bad artists
 		Vector neatOrgs = neatPop.getOrganisms();
-		List<Organism> survivors = new ArrayList<Organism>();
-		
 		for(int i=0;i<neatOrgs.size();i++){
 			
-			// Extract the neural network from the jNEAT organism.
 			Organism org = (Organism)neatOrgs.get(i);
 			if (org.getFitness() != 1){
 				org.setEliminate(true);
 			}
 		}
-		/*
-		List<Organism> removed = new ArrayList<Organism>();
-		for(Object org : neatPop.getOrganisms()){
-			if (((Organism) org).getFitness() != 1){
-				removed.add((Organism) org);
-			}
-		}
-		for(Organism remove : removed){
-			neatPop.getOrganisms().remove(remove);
-			
-		}
 		
-		Population newPop = new Population(	
-		//		neatOrgs.size() - removed.size() /* population size *///, 
-		//		neatPop.inputNodes /* network inputs */ , 
-		//		neatPop.outputNodes /* network outputs */, 
-		//		neatPop.nodesMax /* max index of nodes */, 
-		//		neatPop.recurrent /* recurrent */, 
-		//		neatPop.linkProp /* probability of connecting two nodes */ );
-/*
-		for(Object org : newPop.getOrganisms()){
-			((Organism)org).setFitness(0.1);
+		// Spawn novel artists
+		/*
+		Population newPop = new Population(novelty, 
+				numInputs,
+				numOutputs,
+				maxNodes,
+				true,
+				0.9
+				);
+		newPop.epoch(1);
+		Vector newOrgs = newPop.getOrganisms();
+		for(int i=0;i<newOrgs.size();i++){
+			
+			Organism org = (Organism)newOrgs.get(i);
+			org.setFitness(0.2);
 		}
+		neatPop.getSpecies().addAll(newPop.getSpecies());
+		neatPop.getOrganisms().addAll(newPop.getOrganisms());
 		*/
 		return neatPop;
 	}

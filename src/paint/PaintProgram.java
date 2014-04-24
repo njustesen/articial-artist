@@ -49,7 +49,7 @@ public class PaintProgram extends JPanel{
 			
 			frame = new JFrame();
 			//frame.setSize(1000,700);
-			frame.setPreferredSize(new Dimension(imgWidth,imgHeight));
+			frame.setPreferredSize(new Dimension(imgWidth+50,imgHeight+50));
 			frame.setTitle("Picture");
 			frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 			
@@ -96,38 +96,39 @@ public class PaintProgram extends JPanel{
 			} else {
 
 				// Extract and scale output
-				double moveX = controller.getMove().getX() + scaleNegative(out[0]);
-				double moveY = controller.getMove().getY() + scaleNegative(out[1]);
+				double moveX = controller.getMove().getX() + upscale(scaleNegative(out[0]),3);
+				double moveY = controller.getMove().getY() + upscale(scaleNegative(out[1]),3);
 				int red = (int)upscale(out[2], 255);
 				int green = (int)upscale(out[3], 255);
 				int blue = (int)upscale(out[4], 255);
 				int alpha = (int)upscale(out[5], 255);
-				alpha = 255;
+				//int alpha = 255;
 				color = new Color(red, green, blue, alpha);
 				brushSize = upscale(out[6], maxBrushSize);
 				boolean lift = out[7] > liftLimit;
-				double reposX = out[8];
-				double reposY = out[9];
-				reposX = Math.random();
-				reposY = Math.random();
-				double angleA = upscale(scaleNegative(reposX),imgWidth/10);
-				double angleB = upscale(scaleNegative(reposX),imgWidth/10);
-				
+				double reposX = upscale(out[8], imgWidth);
+				double reposY = upscale(out[9], imgHeight);
+				//reposX = Math.random();
+				//reposY = Math.random();
 				
 				// Update
-				controller.getMove().setX(moveX/2);
-				controller.getMove().setY(moveY/2);
+				controller.getMove().setX(moveX);
+				controller.getMove().setY(moveY);
 				controller.move(0, 0, imgWidth, imgHeight);
-				//surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
-				surface.drawArc(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), angleA, angleB, color, brushSize);
+				surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
+				//surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 
 				if (lift || 
 						(controller.getPos().getX() < 0 || controller.getPos().getX() >= imgWidth || 
 						controller.getPos().getY() >= imgHeight || controller.getPos().getY() < 0)){
 					//if (lift){
-					
-					controller.getPos().setX(reposX*imgWidth);
-					controller.getPos().setY(reposY*imgHeight);	
+					controller.getPos().setX(reposX);
+					controller.getPos().setY(reposY);	
+					System.out.println(reposX + " " + reposY);
+					controller.getMove().setX(0);
+					controller.getMove().setY(0);
+					//System.out.println(controller.getPos().getX()+ " " + controller.getPos().getY());
+
 				}
 			}
 			
@@ -138,6 +139,15 @@ public class PaintProgram extends JPanel{
 		
 		return surface.getImage();
 		
+	}
+	
+	private double scaleTowardsHalf(double value) {
+		if (value >= 0.5)
+		//	return value - (value - 0.5)/4;
+			return value;
+		else
+		//	return value + (0.5 - value)/4;
+			return value;
 	}
 	
 	private int average(double[] out) {

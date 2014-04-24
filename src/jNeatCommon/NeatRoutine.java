@@ -11,7 +11,7 @@ public class NeatRoutine {
    * Insert the method's description here.
    * Creation date: (16/01/2002 16.19.56)
    */
-	   public static double fsigmoid(double activesum,double slope,double constant) 
+	   public static double fsigmoid(double activesum,double slope) 
 	  {
 		 return (1/(1+(Math.exp(-(slope*activesum))))); //Compressed
 	  }

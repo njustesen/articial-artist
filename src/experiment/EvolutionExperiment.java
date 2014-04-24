@@ -13,11 +13,12 @@ public class EvolutionExperiment {
 		Evolution evolution = new Evolution(
 				10, 	/* Number of inputs */
 				10, 	/* Number of outputs */
-				8, 		/* Population size */
-				64,		/* Max. number of nodes */
-				200,	/* Picture width */
-				200,	/* Picture height */
-				2 		/* Number of pictures selected (champions) */
+				6, 		/* Population size */
+				56,		/* Max. number of nodes */
+				260,	/* Picture width */
+				260,	/* Picture height */
+				2, 		/* Number of pictures selected (champions) */
+				2 		/* Number novel artists created each epoch */
 				); 
 		Painter painter = evolution.evolvePainter(
 				1000,	/* Paint time */

@@ -205,7 +205,8 @@
 				  
 					 if (_node.ftype == NeatConstant.SIGMOID){
 						//_node.activation = NeatRoutine.fsigmoid(_node.activesum, 4.924273, 2.4621365);
-						_node.activation = NeatRoutine.fsigmoid(_node.activesum, 0.924273, 2.4621365);
+						_node.activation = NeatRoutine.fsigmoid(_node.activesum, 0.3);
+						
 					 }
 					 _node.activation_count += 1.0;
 				  }
