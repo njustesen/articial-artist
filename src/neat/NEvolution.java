@@ -178,6 +178,9 @@ public class NEvolution {
 		}
 		
 		for(Organism baby : babies){
+			// Mutations?!
+			// Or add new organisms?
+			
 			pop.add(baby);
 		}
 		
