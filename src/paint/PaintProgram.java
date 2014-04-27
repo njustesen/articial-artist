@@ -40,7 +40,7 @@ public class PaintProgram extends JPanel{
 		this.imgHeight = imgHeight;
 		this.color = Color.white;
 		this.brushSize = 1;
-		this.maxBrushSize = imgWidth / 4;
+		this.maxBrushSize = imgWidth / 10;
 		this.liftLimit = 0.9;
 	}
 
@@ -102,7 +102,7 @@ public class PaintProgram extends JPanel{
 				int green = (int)upscale(out[3], 255);
 				int blue = (int)upscale(out[4], 255);
 				int alpha = (int)upscale(out[5], 255);
-				//int alpha = 255;
+				//alpha = 255;
 				color = new Color(red, green, blue, alpha);
 				brushSize = upscale(out[6], maxBrushSize);
 				boolean lift = out[7] > liftLimit;
@@ -115,7 +115,9 @@ public class PaintProgram extends JPanel{
 				controller.getMove().setX(moveX);
 				controller.getMove().setY(moveY);
 				controller.move(0, 0, imgWidth, imgHeight);
-				surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
+				if (!lift){
+					surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
+				}
 				//surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 
 				if (lift || 
@@ -134,7 +136,7 @@ public class PaintProgram extends JPanel{
 			
 		}
 		//if (visual){
-			frame.setVisible(false);
+			frame.setVisible(visual);
 			frame.dispose();
 		//}
 		

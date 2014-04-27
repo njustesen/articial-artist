@@ -19,8 +19,8 @@ public class EvolutionExperiment {
 		
 		BufferedImage goal = null;
 		try {
-			//goal = ImageIO.read(new File("monalisa_small.jpg"));
-			goal = ImageIO.read(new File("tealtest.jpg"));
+			goal = ImageIO.read(new File("monalisa_small.jpg"));
+			//goal = ImageIO.read(new File("blacktest.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -28,18 +28,29 @@ public class EvolutionExperiment {
 		NEvolution evolution = new NEvolution(
 				10, 	/* Number of inputs */
 				10, 	/* Number of outputs */
-				20, 	/* Population size */
+				6, 		/* Population size */
 				5,		/* Max. number of nodes */
-				260,	/* Picture width */
-				260,	/* Picture height */
+				300,	/* Picture width */
+				300,	/* Picture height */
 				2, 		/* Number of pictures selected (champions) */
 				2, 		/* Number novel artists created each epoch */
-				goal); 
+				null); 
+		
+//		Evolution evolution = new Evolution(
+//				10, 	/* Number of inputs */
+//				10, 	/* Number of outputs */
+//				16, 		/* Population size */
+//				5,		/* Max. number of nodes */
+//				300,	/* Picture width */
+//				300,	/* Picture height */
+//				2, 		/* Number of pictures selected (champions) */
+//				2, 		/* Number novel artists created each epoch */
+//				null);
 		
 		Painter painter = evolution.evolvePainter(
-				200,	/* Paint time */
-				1000,
-				true);	/* Iterations in evolution */
+				3000,	/* Paint time */
+				1000,/* Iterations in evolution */
+				false);	
 		
 	}
 

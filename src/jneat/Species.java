@@ -526,7 +526,7 @@
 			} //end population champ
 			
 			//If we have a Species champion, just clone it 
-			else if ((!champ_done) && (expected_offspring > 5)) 
+			else if ((!champ_done) && (expected_offspring > 5) && false) 
 			{
 			   mom = thechamp; //Mom is the champ
 			   new_genome = mom.genome.duplicate(count);
@@ -537,6 +537,7 @@
 			else if ((NeatRoutine.randfloat() < Neat.p_mutate_only_prob) || poolsize == 1) 
 			{
 			//Choose the random parent
+				System.out.println("MUTATION");
 			   orgnum = NeatRoutine.randint(0, poolsize);
 			   _organism = (Organism) organisms.elementAt(orgnum);
 			   mom = _organism;
@@ -546,13 +547,13 @@
 			//various mutations
 			   if (NeatRoutine.randfloat() < Neat.p_mutate_add_node_prob) 
 			   {
-			   //	System.out.print("\n ....species.reproduce.mutate add node");
+			   System.out.print("\n ....species.reproduce.mutate add node");
 				  new_genome.mutate_add_node(pop); 
 				  mut_struct_baby = true;
 			   } 
 			   else if (NeatRoutine.randfloat() < Neat.p_mutate_add_link_prob) 
 			   {
-				//System.out.print("\n ....mutate add link");
+				System.out.print("\n ....mutate add link");
 				  net_analogue = new_genome.genesis(generation);
 				  new_genome.mutate_add_link(pop, Neat.p_newlink_tries);
 				  mut_struct_baby = true;
@@ -563,37 +564,37 @@
 			   //If we didn't do a structural mutation, we do the other kinds
 				  if (NeatRoutine.randfloat() < Neat.p_mutate_random_trait_prob) 
 				  {
-				  //System.out.print("\n    ...mutate random trait");
+				  System.out.print("\n    ...mutate random trait");
 					 new_genome.mutate_random_trait();
 				  }
 			   
 				  if (NeatRoutine.randfloat() < Neat.p_mutate_link_trait_prob) 
 				  {
-				  //    System.out.print("\n    ...mutate linktrait");
+					 System.out.print("\n    ...mutate linktrait");
 					 new_genome.mutate_link_trait(1);
 				  }
 			   
 				  if (NeatRoutine.randfloat() < Neat.p_mutate_node_trait_prob) 
 				  {
-				  //System.out.print("\n    ...mutate node trait");
+				  System.out.print("\n    ...mutate node trait");
 					 new_genome.mutate_node_trait(1);
 				  }
 			   
 				  if (NeatRoutine.randfloat() < Neat.p_mutate_link_weights_prob) 
 				  {
-				  //System.out.print("\n    ...mutate link weight");
+				  System.out.print("\n    ...mutate link weight");
 					 new_genome.mutate_link_weight(mut_power, 1.0, NeatConstant.GAUSSIAN);
 				  }
 			   
 				  if (NeatRoutine.randfloat() < Neat.p_mutate_toggle_enable_prob) 
 				  {
-				  //System.out.print("\n    ...mutate toggle enable");
+				  System.out.print("\n    ...mutate toggle enable");
 					 new_genome.mutate_toggle_enable(1);
 				  }
 			   
 				  if (NeatRoutine.randfloat() < Neat.p_mutate_gene_reenable_prob) 
 				  {
-				  //System.out.print("\n    ...mutate gene_reenable:");
+				  System.out.print("\n    ...mutate gene_reenable:");
 					 new_genome.mutate_gene_reenable();
 				  }
 			   } //
@@ -665,10 +666,6 @@
 				  new_genome = mom.genome.mate_singlepoint(_dad.genome, count);
 			   }
 			
-			
-			
-			
-			
 			   mate_baby = true;
 			
 			//Determine whether to mutate the baby's Genome
@@ -681,13 +678,13 @@
 			   //various mutations
 				  if (NeatRoutine.randfloat() < Neat.p_mutate_add_node_prob) 
 				  {
-				  //System.out.print("\n ....species.mutate add node2");
+				  System.out.print("\n ....species.mutate add node2");
 					 new_genome.mutate_add_node(pop);
 					 mut_struct_baby = true;
 				  } 
 				  else if (NeatRoutine.randfloat() < Neat.p_mutate_add_link_prob) 
 				  {
-				  //       System.out.print("\n ....mutate add link2");
+				         System.out.print("\n ....mutate add link2");
 					 net_analogue = new_genome.genesis(generation);
 					 new_genome.mutate_add_link(pop, Neat.p_newlink_tries);
 					 mut_struct_baby = true;
@@ -698,33 +695,33 @@
 				  //If we didn't do a structural mutation, we do the other kinds
 					 if (NeatRoutine.randfloat() < Neat.p_mutate_random_trait_prob) 
 					 {
-					 //                 System.out.print("\n    ...mutate random trait");
+					                  System.out.print("\n    ...mutate random trait");
 						new_genome.mutate_random_trait();
 					 }
 					 if (NeatRoutine.randfloat() < Neat.p_mutate_link_trait_prob) 
 					 {
-					 //                  System.out.print("\n    ...mutate linktrait");
+					                   System.out.print("\n    ...mutate linktrait");
 						new_genome.mutate_link_trait(1);
 					 }
 				  
 					 if (NeatRoutine.randfloat() < Neat.p_mutate_node_trait_prob) 
 					 {
-					 //                  System.out.print("\n    ...mutate node trait");
+					                  System.out.print("\n    ...mutate node trait");
 						new_genome.mutate_node_trait(1);
 					 }
 					 if (NeatRoutine.randfloat() < Neat.p_mutate_link_weights_prob) 
 					 {
-					 //                 System.out.print("\n    ...mutate link weight");
+					                 System.out.print("\n    ...mutate link weight");
 						new_genome.mutate_link_weight(mut_power, 1.0, NeatConstant.GAUSSIAN);
 					 }
 					 if (NeatRoutine.randfloat() < Neat.p_mutate_toggle_enable_prob) 
 					 {
-					 //                System.out.print("\n    ...mutate toggle enable");
+					                 System.out.print("\n    ...mutate toggle enable");
 						new_genome.mutate_toggle_enable(1);
 					 }
 					 if (NeatRoutine.randfloat() < Neat.p_mutate_gene_reenable_prob) 
 					 {
-					 //                System.out.print("\n    ...mutate gene_reenable:");
+					                 System.out.print("\n    ...mutate gene_reenable:");
 						new_genome.mutate_gene_reenable();
 					 }
 				  } //
