@@ -115,8 +115,12 @@ public class PaintProgram extends JPanel{
 				controller.getMove().setX(moveX);
 				controller.getMove().setY(moveY);
 				controller.move(0, 0, imgWidth, imgHeight);
-				surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
-				//surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
+				if (out[7] < 0.45)
+					surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
+				else if (out[7] < 0.9)
+					surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
+				else
+					surface.drawRoundRect(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 
 				if (lift || 
 						(controller.getPos().getX() < 0 || controller.getPos().getX() >= imgWidth || 
