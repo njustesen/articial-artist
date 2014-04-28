@@ -49,7 +49,7 @@ public class PaintProgram extends JPanel{
 		this.imgHeight = imgHeight;
 		this.color = Color.white;
 		this.brushSize = 1;
-		this.maxBrushSize = imgWidth / 30;
+		this.maxBrushSize = imgWidth / 10;
 		this.liftLimit = 0.9;
 		if (line==null)
 			setupSoundInput();
@@ -104,7 +104,7 @@ public class PaintProgram extends JPanel{
 			
 			// Get sound level
 			soundLevel = getSoundLevel();
-			System.out.println(soundLevel);
+			//System.out.println(soundLevel);
 			
 			// Old position
 			int xFrom = (int) controller.getPos().getX();
@@ -117,6 +117,7 @@ public class PaintProgram extends JPanel{
 			in[2] = controller.getMove().getX();
 			in[3] = controller.getMove().getY();
 			in[4] = (double)time / (double)paintTime;
+			//in[4] = 0.5;
 			in[5] = soundLevel;
 			//in[4] = 1;
 			in[6] = downscale(brushSize, maxBrushSize);
@@ -125,6 +126,10 @@ public class PaintProgram extends JPanel{
 			in[9] = downscale(color.getGreen(),255);
 			in[10] = downscale(color.getBlue(),255);
 			//in[0] = soundLevel;
+			/*
+			for(double d : in)
+				d = d * soundLevel;
+			*/
 			
 			// Get output
 			double[] out = painter.getOutput(in);
@@ -148,6 +153,7 @@ public class PaintProgram extends JPanel{
 				int blue = (int)upscale(scaleTowardsHalf(out[4]), 255);
 				int alpha = (int)upscale(scaleTowardsHalf(out[5]), 255);
 				//alpha = 255;
+				//alpha = (int) (soundLevel * 255);
 				color = new Color(red, green, blue, alpha);
 				brushSize = upscale(scaleTowardsHalf(out[6]), maxBrushSize);
 				boolean lift = scaleTowardsHalf(out[7]) > liftLimit;
