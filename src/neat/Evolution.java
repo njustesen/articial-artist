@@ -254,7 +254,7 @@ public class Evolution {
 			// Extract the neural network from the jNEAT organism.
 			Painter painter = organismToPainter((Organism)neatOrgs.get(i));
 			
-			images.add(program.paintPicture(painter, paintTime));
+			images.add(program.paintPicture(painter, paintTime, true));
 			
 		}
 		

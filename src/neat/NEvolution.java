@@ -69,13 +69,13 @@ public class NEvolution {
 		for(int i = 1; i <= iterations; i++){
 			
 			// Paint pictures
-			List<BufferedImage> pictures = paint(Npopulation, imgWidth, imgHeight, paintTime);
+			List<BufferedImage> pictures = paint(Npopulation, imgWidth, imgHeight, paintTime, true);
 			
 			// Show pictures and wait for feedback
 			if (goal)
 				presentAndCompare(Npopulation, pictures);
 			else
-				presentAndRate(Npopulation, pictures);
+				presentAndRate(Npopulation, pictures, paintTime);
 			// Assign random fitness
 			//assignRandomFitness(neatPop, i);
 			
@@ -230,7 +230,7 @@ public class NEvolution {
 		
 	}
 
-	private void presentAndRate(List<Organism> pop, List<BufferedImage> pictures) {
+	private void presentAndRate(List<Organism> pop, List<BufferedImage> pictures, int paintTime) {
 		
 		panel.clearPictures();
 		panel.addPictures(pictures);
@@ -243,6 +243,14 @@ public class NEvolution {
 		while(panel.getSelected().size() < champions){
 			
 			panel.repaint();
+			
+			if (panel.shiftSelected != -1) {
+				List<Organism> orgs = new ArrayList<Organism>();
+				orgs.add(pop.get(panel.shiftSelected));
+				paint(orgs, 600, 600, paintTime, false);
+				panel.shiftSelected = -1;
+				
+			}
 			
 			try {
 				Thread.sleep(50);
@@ -270,7 +278,7 @@ public class NEvolution {
 		
 	}
 
-	private List<BufferedImage> paint(List<Organism> neatPop, int width, int height, int paintTime) {
+	private List<BufferedImage> paint(List<Organism> neatPop, int width, int height, int paintTime, boolean autoClose) {
 		
 		PaintProgram program = new PaintProgram(true, width, height); 
 		List<BufferedImage> images = new ArrayList<BufferedImage>();
@@ -280,7 +288,7 @@ public class NEvolution {
 			// Extract the neural network from the jNEAT organism.
 			Painter painter = organismToPainter(org);
 			
-			images.add(program.paintPicture(painter, paintTime));
+			images.add(program.paintPicture(painter, paintTime, autoClose));
 			
 		}
 		

@@ -79,7 +79,7 @@ public class PaintProgram extends JPanel{
 	    
 	}
 
-	public BufferedImage paintPicture(Painter painter, int paintTime){
+	public BufferedImage paintPicture(Painter painter, int paintTime, boolean autoClose){
 		//if (visual) {
 		//setupSoundInput();
 		line.start();
@@ -197,8 +197,10 @@ public class PaintProgram extends JPanel{
 			
 		}
 		//if (visual){
+		if (autoClose) {
 			frame.setVisible(visual);
 			frame.dispose();
+		}
 		//}
 		
 			line.stop();
