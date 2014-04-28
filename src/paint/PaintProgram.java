@@ -8,10 +8,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.beans.Visibility;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -30,7 +36,9 @@ public class PaintProgram extends JPanel{
 	private double lifted;
 	private int maxBrushSize;
 	private double liftLimit;
-	private int soundLevel;
+	private double soundLevel;
+	private TargetDataLine line;
+	private byte[] data;
 	
 	public PaintProgram(boolean visual, int imgWidth, int imgHeight) {
 		super();
@@ -43,6 +51,32 @@ public class PaintProgram extends JPanel{
 		this.brushSize = 1;
 		this.maxBrushSize = imgWidth / 30;
 		this.liftLimit = 0.9;
+		setupSoundInput();
+	}
+
+	private void setupSoundInput() {
+		// TODO Auto-generated method stub
+		AudioFormat format = new AudioFormat(8000.0f, 8, 1, true, true);
+	
+		line = null;
+	    DataLine.Info info = new DataLine.Info(TargetDataLine.class,
+	            format); 
+	    if (!AudioSystem.isLineSupported(info)) {
+	
+	    }
+	
+	    try {
+	        line = (TargetDataLine) AudioSystem.getLine(info);
+	        line.open(format);
+	    } catch (LineUnavailableException ex) {
+	        // Handle the error ...
+	    }
+	
+	    ByteArrayOutputStream out = new ByteArrayOutputStream();
+	    int numBytesRead;
+	    data = new byte[10];
+	    
+	    line.start();
 	}
 
 	public BufferedImage paintPicture(Painter painter, int paintTime){
@@ -67,14 +101,14 @@ public class PaintProgram extends JPanel{
 		while(time++ < paintTime){
 			
 			// Get sound level
-			soundLevel = 1;
+			soundLevel = getSoundLevel();
 			
 			// Old position
 			int xFrom = (int) controller.getPos().getX();
 			int yFrom = (int) controller.getPos().getY();
 			
 			// Input
-			double[] in = new double[10]; // Remember to set number of inputs
+			double[] in = new double[11]; // Remember to set number of inputs
 			in[0] = downscale(controller.getPos().getX(), imgWidth);
 			in[1] = downscale(controller.getPos().getY(), imgHeight);
 			in[2] = controller.getMove().getX();
@@ -160,6 +194,28 @@ public class PaintProgram extends JPanel{
 		
 	}
 	
+	private double getSoundLevel() {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		int numBytesRead = line.read(data, 0, data.length);
+        //System.out.println("Level: " + line.getLevel());
+        //System.out.println(line.get);
+        // Save this chunk of data.
+        out.write(data, 0, numBytesRead);
+        
+        double v = 0;
+        
+        for(int i=0; i<numBytesRead; i+=1) {
+            //System.out.println(Byte.toString(data[i]));
+            int abs = Math.abs(data[i]);
+            double val = (double)abs / (double)128;
+            //System.out.println(val);
+            v += val;
+        }
+        
+        return v / numBytesRead;
+        
+	}
+
 	private double scaleTowardsHalf(double value) {
 		if (value >= 0.5)
 			return value - (value - 0.5)/40;

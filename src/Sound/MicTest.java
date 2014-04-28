@@ -1,4 +1,4 @@
-package Sound;
+package sound;
 
 import java.io.ByteArrayOutputStream;
 
@@ -28,17 +28,20 @@ public class MicTest {
 	    int numBytesRead;
 	    byte[] data = new byte[line.getBufferSize() / 5];
 
-
 	    line.start();
 
 	    while (true) {
 
 	        numBytesRead = line.read(data, 0, data.length);
+	        //System.out.println("Level: " + line.getLevel());
+	        //System.out.println(line.get);
 	        // Save this chunk of data.
 	        out.write(data, 0, numBytesRead);
 	        for(int i=0; i<numBytesRead; i+=1) {
-	            System.out.println(Byte.toString(data[i]));
-
+	            //System.out.println(Byte.toString(data[i]));
+	            int abs = Math.abs(data[i]);
+	            double val = (double)abs / (double)128;
+	            System.out.println(val);
 	        }
 	        System.out.println();
 	    }
