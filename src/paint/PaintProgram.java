@@ -37,8 +37,8 @@ public class PaintProgram extends JPanel{
 	private int maxBrushSize;
 	private double liftLimit;
 	private double soundLevel;
-	private TargetDataLine line;
-	private byte[] data;
+	static TargetDataLine line;
+	static byte[] data;
 	
 	public PaintProgram(boolean visual, int imgWidth, int imgHeight) {
 		super();
@@ -51,7 +51,8 @@ public class PaintProgram extends JPanel{
 		this.brushSize = 1;
 		this.maxBrushSize = imgWidth / 30;
 		this.liftLimit = 0.9;
-		setupSoundInput();
+		if (line==null)
+			setupSoundInput();
 	}
 
 	private void setupSoundInput() {
@@ -76,11 +77,12 @@ public class PaintProgram extends JPanel{
 	    int numBytesRead;
 	    data = new byte[10];
 	    
-	    line.start();
 	}
 
 	public BufferedImage paintPicture(Painter painter, int paintTime){
 		//if (visual) {
+		//setupSoundInput();
+		line.start();
 			
 			frame = new JFrame();
 			//frame.setSize(1000,700);
@@ -102,6 +104,7 @@ public class PaintProgram extends JPanel{
 			
 			// Get sound level
 			soundLevel = getSoundLevel();
+			System.out.println(soundLevel);
 			
 			// Old position
 			int xFrom = (int) controller.getPos().getX();
@@ -114,12 +117,14 @@ public class PaintProgram extends JPanel{
 			in[2] = controller.getMove().getX();
 			in[3] = controller.getMove().getY();
 			in[4] = (double)time / (double)paintTime;
-			in[5] = downscale(brushSize, maxBrushSize);
-			in[6] = downscale(color.getAlpha(),255);
-			in[7] = downscale(color.getRed(),255);
-			in[8] = downscale(color.getGreen(),255);
-			in[9] = downscale(color.getBlue(),255);
-			in[10] = soundLevel;
+			in[5] = soundLevel;
+			//in[4] = 1;
+			in[6] = downscale(brushSize, maxBrushSize);
+			in[7] = downscale(color.getAlpha(),255);
+			in[8] = downscale(color.getRed(),255);
+			in[9] = downscale(color.getGreen(),255);
+			in[10] = downscale(color.getBlue(),255);
+			//in[0] = soundLevel;
 			
 			// Get output
 			double[] out = painter.getOutput(in);
@@ -190,6 +195,8 @@ public class PaintProgram extends JPanel{
 			frame.dispose();
 		//}
 		
+			line.stop();
+			
 		return surface.getImage();
 		
 	}

@@ -29,7 +29,7 @@ public class EvolutionExperiment {
 		NEvolution evolution = new NEvolution(
 				11, 	/* Number of inputs */
 				10, 	/* Number of outputs */
-				8, 		/* Population size */
+				4, 		/* Population size */
 				40,		/* Max. number of nodes */
 				300,	/* Picture width */
 				300,	/* Picture height */
