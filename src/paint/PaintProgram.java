@@ -30,6 +30,7 @@ public class PaintProgram extends JPanel{
 	private double lifted;
 	private int maxBrushSize;
 	private double liftLimit;
+	private int soundLevel;
 	
 	public PaintProgram(boolean visual, int imgWidth, int imgHeight) {
 		super();
@@ -41,7 +42,7 @@ public class PaintProgram extends JPanel{
 		this.color = Color.white;
 		this.brushSize = 1;
 		this.maxBrushSize = imgWidth / 30;
-		this.liftLimit = 0.7;
+		this.liftLimit = 0.9;
 	}
 
 	public BufferedImage paintPicture(Painter painter, int paintTime){
@@ -64,6 +65,10 @@ public class PaintProgram extends JPanel{
 		
 		int time = 0;
 		while(time++ < paintTime){
+			
+			// Get sound level
+			soundLevel = 1;
+			
 			// Old position
 			int xFrom = (int) controller.getPos().getX();
 			int yFrom = (int) controller.getPos().getY();
@@ -80,6 +85,7 @@ public class PaintProgram extends JPanel{
 			in[7] = downscale(color.getRed(),255);
 			in[8] = downscale(color.getGreen(),255);
 			in[9] = downscale(color.getBlue(),255);
+			in[10] = soundLevel;
 			
 			// Get output
 			double[] out = painter.getOutput(in);
@@ -122,12 +128,12 @@ public class PaintProgram extends JPanel{
 				//surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 */
 				if (!lift){
-					if (out[7] < 0.45)
+					if (out[7] < 0.8)
 						surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
 					else if (out[7] < 0.9)
 						surface.drawRoundRect(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
-						else
-					surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
+					else
+						surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 				}
 					
 				if (lift || 
@@ -156,11 +162,11 @@ public class PaintProgram extends JPanel{
 	
 	private double scaleTowardsHalf(double value) {
 		if (value >= 0.5)
-		//	return value - (value - 0.5)/4;
-			return value;
+			return value - (value - 0.5)/40;
+			//return value;
 		else
-		//	return value + (0.5 - value)/4;
-			return value;
+			return value + (0.5 - value)/40;
+			//return value;
 	}
 	
 	private int average(double[] out) {
