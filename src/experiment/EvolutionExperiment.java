@@ -27,12 +27,12 @@ public class EvolutionExperiment {
 		}
 		
 		NEvolution evolution = new NEvolution(
-				11, 	/* Number of inputs */
+				10, 	/* Number of inputs */
 				10, 	/* Number of outputs */
-				4, 		/* Population size */
+				6, 		/* Population size */
 				40,		/* Max. number of nodes */
-				300,	/* Picture width */
-				300,	/* Picture height */
+				600,	/* Picture width */
+				450,	/* Picture height */
 				2, 		/* Number of pictures selected (champions) */
 				2, 		/* Number novel artists created each epoch */
 				null); 
@@ -49,7 +49,7 @@ public class EvolutionExperiment {
 //				null);
 		
 		Painter painter = evolution.evolvePainter(
-				100,	/* Paint time */
+				5000,	/* Paint time */
 				1000,/* Iterations in evolution */
 				false);	
 		
