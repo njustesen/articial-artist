@@ -46,6 +46,15 @@ class Surface extends JPanel {
 		repaint();
 		
 	}
+	
+	public void printId(int id, int x, int y) {
+		g.setColor(Color.BLACK);
+		g.drawString("" + id, x, y);
+		repaint();
+		
+	}
+	
+	
 
 	@Override
 	public void repaint(){
@@ -55,6 +64,7 @@ class Surface extends JPanel {
 			this.getGraphics().fillRect(0, 0, this.getWidth(), this.getHeight());
 			((Graphics2D) this.getGraphics()).setBackground(Color.white);
 			*/
+			
 			this.getGraphics().drawImage(image, 0, 0, null);
 		}
 	}

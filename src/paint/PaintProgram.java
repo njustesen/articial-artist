@@ -117,8 +117,8 @@ public class PaintProgram extends JPanel{
 			in[2] = controller.getMove().getX();
 			in[3] = controller.getMove().getY();
 			in[4] = (double)time / (double)paintTime;
-			//in[4] = 0.5;
-			in[5] = soundLevel;
+			in[5] = 0.5;
+			//in[5] = soundLevel;
 			//in[4] = 1;
 			in[6] = downscale(brushSize, maxBrushSize);
 			in[7] = downscale(color.getAlpha(),255);
@@ -146,8 +146,8 @@ public class PaintProgram extends JPanel{
 			} else {
 
 				// Extract and scale output
-				double moveX = controller.getMove().getX() + upscale(scaleNegative(scaleTowardsHalf(out[0])),3);
-				double moveY = controller.getMove().getY() + upscale(scaleNegative(scaleTowardsHalf(out[1])),3);
+				double moveX = controller.getMove().getX() + upscale(scaleNegative(scaleTowardsHalf(out[0])),imgWidth/32);
+				double moveY = controller.getMove().getY() + upscale(scaleNegative(scaleTowardsHalf(out[1])),imgHeight/32);
 				int red = (int)upscale(scaleTowardsHalf(out[2]), 255);
 				int green = (int)upscale(scaleTowardsHalf(out[3]), 255);
 				int blue = (int)upscale(scaleTowardsHalf(out[4]), 255);
@@ -196,6 +196,9 @@ public class PaintProgram extends JPanel{
 			}
 			
 		}
+		
+		//surface.printId(painter.getId(), imgWidth/2, imgHeight/10*7);
+		
 		//if (visual){
 			frame.setVisible(visual);
 			frame.dispose();

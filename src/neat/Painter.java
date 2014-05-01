@@ -6,9 +6,11 @@ import jneat.Network;
 public class Painter {
 
 	Network brain;
+	int id;
 	
-	public Painter(Network brain) {
+	public Painter(Network brain, int id) {
 		this.brain = brain;
+		this.id = id;
 	}
 
 	
@@ -42,5 +44,27 @@ public class Painter {
 		return outputs;
 		
 	}
+
+
+	public Network getBrain() {
+		return brain;
+	}
+
+
+	public void setBrain(Network brain) {
+		this.brain = brain;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 	
 }

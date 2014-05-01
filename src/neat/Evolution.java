@@ -101,6 +101,8 @@ public class Evolution {
 			// Assign random fitness
 			//assignRandomFitness(neatPop, i);
 			
+			
+			
 			if (i == iterations)
 				break;
 			
@@ -157,7 +159,10 @@ public class Evolution {
 			List<BufferedImage> pictures) {
 		
 		panel.clearPictures();
-		panel.addPictures(pictures);
+		List<Integer> ids = new ArrayList<Integer>();
+		for(Object obj : neatPop.getOrganisms())
+			ids.add(((Organism)obj).getGenome().getGenome_id());
+		panel.addPictures(pictures, ids);
 		
 		Vector<Organism> pop = neatPop.getOrganisms();
 		
@@ -205,7 +210,10 @@ public class Evolution {
 	private void presentAndRate(Population neatPop, List<BufferedImage> pictures) {
 		
 		panel.clearPictures();
-		panel.addPictures(pictures);
+		List<Integer> ids = new ArrayList<Integer>();
+		for(Object obj : neatPop.getOrganisms())
+			ids.add(((Organism)obj).getGenome().getGenome_id());
+		panel.addPictures(pictures, ids);
 		Vector neatOrgs = neatPop.getOrganisms();
 		
 		// Reset fitness
@@ -265,7 +273,10 @@ public class Evolution {
 	private void showImages(List<BufferedImage> pictures) {
 		
 		this.panel.clearPictures();
-		this.panel.addPictures(pictures);
+		List<Integer> ids = new ArrayList<Integer>();
+		//for(Object obj : neatPop.getOrganisms())
+		//	ids.add(((Organism)obj).getGenome().getGenome_id());
+		panel.addPictures(pictures, ids);
 		
 	}
 
@@ -284,7 +295,7 @@ public class Evolution {
 	
 	private Painter organismToPainter(Organism organism) {
 		
-		return new Painter(organism.getNet());
+		return new Painter(organism.getNet(), organism.getGenome().getGenome_id());
 		
 	}
 

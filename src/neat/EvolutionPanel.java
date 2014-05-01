@@ -2,6 +2,7 @@ package neat;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -15,8 +16,10 @@ import javax.swing.event.MouseInputListener;
 
 public class EvolutionPanel extends JPanel implements MouseInputListener {
 
+	List<Integer> ids;
 	List<BufferedImage> pictures;
 	List<BufferedImage> selected;
+	
 	JScrollPane scrollPane;
 	int width;
 	int height;
@@ -47,16 +50,9 @@ public class EvolutionPanel extends JPanel implements MouseInputListener {
 		//scrollPane.removeAll();
 	}
 
-	public void addPictures(List<BufferedImage> pics) {
+	public void addPictures(List<BufferedImage> pics, List<Integer> ids) {
 		this.pictures.addAll(pics);
-		/*
-		for(BufferedImage image : pictures){
-			PictureComponent pic = new PictureComponent(image);
-			//scrollPane.add(pic);
-			this.add(pic);
-		}
-		//scrollPane.add(comp);
-		*/ 
+		this.ids = ids;
 		repaint();
 	}
 
@@ -65,11 +61,11 @@ public class EvolutionPanel extends JPanel implements MouseInputListener {
         super.paintComponent(g);
         g.clearRect(0, 0, width, height);
         int x = space;
-        int y = top + space;
+        int y = (int) (top + space*1.3);
         for(BufferedImage picture : pictures){
         	if (x >= this.getSize().width-picture.getWidth()+space){
         		x = space;
-        		y += space + picture.getHeight(); 
+        		y += space*1.3 + picture.getHeight(); 
         	}
         	
         	if(selected.contains(picture)){
@@ -78,6 +74,12 @@ public class EvolutionPanel extends JPanel implements MouseInputListener {
         		g.fillRect(x-border, y-border, picture.getWidth()+border*2, picture.getHeight()+border*2);
         	}
         	g.drawImage(picture, x, y, picture.getWidth(), picture.getHeight(), null);
+        	
+        	if (ids.size() > pictures.indexOf(picture)){
+        		g.setColor(Color.BLACK);
+        		g.drawString(""+ids.get(pictures.indexOf(picture)), x, y);
+        	}
+        	
         	x += space + picture.getWidth();
         	
         	y += 0;
@@ -87,6 +89,8 @@ public class EvolutionPanel extends JPanel implements MouseInputListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
+		
+		
 		
 		int x = arg0.getX();
 		int y = arg0.getY();

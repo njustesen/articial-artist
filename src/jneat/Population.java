@@ -224,12 +224,13 @@
 		 }
 	  
 	  }
-   /**
-   *
-   * epoch turns over a Population to
-   * the next generation based on fitness
-   *
-   */
+        
+	   /**
+	   *
+	   * epoch turns over a Population to
+	   * the next generation based on fitness
+	   *
+	   */
 	   public void epoch(int generation) 
 	  {
 	  
@@ -270,12 +271,12 @@
 	  // Then, within each Species, mark for death 
 	  // those below survival_thresh * average
 	  
-//		 itr_specie = species.iterator();
-//		 while (itr_specie.hasNext()) 
-//		 {
-//			_specie = ((Species) itr_specie.next());
-//			_specie.adjust_fitness();
-//		 }
+//			 itr_specie = species.iterator();
+//			 while (itr_specie.hasNext()) 
+//			 {
+//				_specie = ((Species) itr_specie.next());
+//				_specie.adjust_fitness();
+//			 }
 	  
 	  //Go through the organisms and add up their fitnesses to compute the
 	  //overall average
@@ -834,113 +835,191 @@
 	  //   	System.out.print("\n Epoch complete");
 	  
 	  }
-   
-	   public void print_to_file_by_species(String xNameFile) {
-	  //
-	  // write to file genome in native format (for re-read)
-	  //
-		 IOseq xFile;
-	  
-		 xFile = new IOseq(xNameFile);
-		 xFile.IOseqOpenW(false);
-	  
-	  
-		 try {
-		 
-			Iterator itr_specie;
-			itr_specie = species.iterator();
-		 
-			while (itr_specie.hasNext()) {
-			   Species _specie = ((Species) itr_specie.next());
-			   _specie.print_to_file(xFile);
-			}
-		 
-		 } 
-			 catch (Throwable e) {
-			   System.err.println(e);
-			}
-	  
-		 xFile.IOseqCloseW();
-	  
-	  
-	  
-	  }      
-   
-	   public void speciate() 
-	  {
-	  
-		 Iterator itr_organism;
-		 Iterator itr_specie;
-	  
-		 Organism compare_org = null; //Organism for comparison 
-		 Species newspecies = null;
-	  
-		 species = new Vector(1, 0);
-		 int counter = 0; //Species counter
-	  
-	  // for each organism.....
-	  
-		 itr_organism = organisms.iterator();
-		 while (itr_organism.hasNext()) 
-		 {
-		 
-			Organism _organism = ((Organism) itr_organism.next());
-		 
-		 // if list species is empty , create the first species!
-			if (species.isEmpty()) 
-			{
-			   newspecies = new Species(++counter); // create a new specie
-			   species.add(newspecies); // add this species to list of species
-			   newspecies.add_Organism(_organism);
-			// Add to new spoecies the current organism
-			   _organism.setSpecies(newspecies); // Point organism to its species
-			
-			} 
-			else 
-			{
-			// looop in all species.... (each species is a Vector of organism...)
-			   itr_specie = species.iterator();
-			   boolean done = false;
-			
-			   while (!done && itr_specie.hasNext()) 
-			   {
-			   
-			   // point _species-esima
-				  Species _specie = ((Species) itr_specie.next());
-			   // point to first organism of this _specie-esima
-				  compare_org = (Organism) _specie.getOrganisms().firstElement();
-			   // compare _organism-esimo('_organism') with first organism in current specie('compare_org')
-				  double curr_compat = 
-				  _organism.getGenome().compatibility(compare_org.getGenome()); 
-			   
-				  if (curr_compat < Neat.p_compat_threshold) 
-				  {
-				  //Found compatible species, so add this organism to it
-					 _specie.add_Organism(_organism);
-				  //update in organism pointer to its species 
-					 _organism.setSpecies(_specie);
-				  //force exit from this block ...
-					 done = true;
-				  }
-			   }
-			
-			// if no found species compatible , create specie 
-			   if (!done) 
-			   {
-				  newspecies = new Species(++counter); // create a new specie
-				  species.add(newspecies); // add this species to list of species
-				  newspecies.add_Organism(_organism);
-			   // Add to new species the current organism
-				  _organism.setSpecies(newspecies); // Point organism to its species
-			   
-			   }
-			
-			}
-		 
-		 }
-	  
-		 last_species = counter; //Keep track of highest species
-	  }               
+		   
+	   /**
+	   *
+	   * epoch turns over a Population to
+	   * the next generation based on fitness
+	   *
+	   */
+		   public void epochMutateOnly(int generation) 
+		  {
+		  
+			 Iterator itr_specie;
+			 Iterator itr_organism;
+			 double total = 0.0;
+		  //double total_expected=0.0;
+			 int orgcount = 0;
+			 int max_expected;
+			 int total_expected; //precision checking
+			 int final_expected;
+			 int half_pop = 0;
+			 double overall_average = 0.0;
+			 int total_organisms = 0;
+			 double tmpd = 0.0;
+			 double skim = 0.0;
+			 int tmpi = 0;
+			 int best_species_num = 0;
+			 int stolen_babies = 0;
+			 int one_fifth_stolen = 0;
+			 int one_tenth_stolen = 0;
+			 int size_of_curr_specie = 0;
+			 int NUM_STOLEN = Neat.p_babies_stolen; //Number of babies to steal
+		  // al momento NUM_STOLEN=1
+		  
+			 Species _specie = null;
+			 Species curspecies = null;
+			 Species best_specie = null;
+			 Vector sorted_species = null;
+		  
+		  // ---------- phase of elimination of organism with flag eliminate ------------
+			 itr_organism = organisms.iterator();
+			 Vector vdel = new Vector(organisms.size());
+		  
+			 while (itr_organism.hasNext()) 
+			 {
+				Organism _organism = ((Organism) itr_organism.next());
+				if (_organism.eliminate) 
+				{
+				//Remove the organism from its Species
+				   _specie = _organism.species;
+				   _specie.remove_org(_organism);
+				//store the organism can be elimanated;
+				   vdel.add(_organism);
+				}
+			 }
+		  //eliminate organism from master list
+			 for (int i = 0; i < vdel.size(); i++) 
+			 {
+				Organism _organism = (Organism) vdel.elementAt(i);
+			 //  		organisms.remove(_organism);
+				organisms.removeElement(_organism);
+			 }
+		  
+			 vdel.clear();
+		  
+			 boolean rc = false;
+		  
+			 itr_specie = sorted_species.iterator();
+			 
+			 while (itr_specie.hasNext()) 
+			 {
+				_specie = ((Species) itr_specie.next());
+				rc = _specie.reproduce(generation, this, sorted_species);
+			 }
+		  
+		  //------dopo---------------------------------------
+			 
+		  
+		  }
+	   
+		   public void print_to_file_by_species(String xNameFile) {
+		  //
+		  // write to file genome in native format (for re-read)
+		  //
+			 IOseq xFile;
+		  
+			 xFile = new IOseq(xNameFile);
+			 xFile.IOseqOpenW(false);
+		  
+		  
+			 try {
+			 
+				Iterator itr_specie;
+				itr_specie = species.iterator();
+			 
+				while (itr_specie.hasNext()) {
+				   Species _specie = ((Species) itr_specie.next());
+				   _specie.print_to_file(xFile);
+				}
+			 
+			 } 
+				 catch (Throwable e) {
+				   System.err.println(e);
+				}
+		  
+			 xFile.IOseqCloseW();
+		  
+		  
+		  
+		  }      
+	   
+		   public void speciate() 
+		  {
+		  
+			 Iterator itr_organism;
+			 Iterator itr_specie;
+		  
+			 Organism compare_org = null; //Organism for comparison 
+			 Species newspecies = null;
+		  
+			 species = new Vector(1, 0);
+			 int counter = 0; //Species counter
+		  
+		  // for each organism.....
+		  
+			 itr_organism = organisms.iterator();
+			 while (itr_organism.hasNext()) 
+			 {
+			 
+				Organism _organism = ((Organism) itr_organism.next());
+			 
+			 // if list species is empty , create the first species!
+				if (species.isEmpty()) 
+				{
+				   newspecies = new Species(++counter); // create a new specie
+				   species.add(newspecies); // add this species to list of species
+				   newspecies.add_Organism(_organism);
+				// Add to new spoecies the current organism
+				   _organism.setSpecies(newspecies); // Point organism to its species
+				
+				} 
+				else 
+				{
+				// looop in all species.... (each species is a Vector of organism...)
+				   itr_specie = species.iterator();
+				   boolean done = false;
+				
+				   while (!done && itr_specie.hasNext()) 
+				   {
+				   
+				   // point _species-esima
+					  Species _specie = ((Species) itr_specie.next());
+				   // point to first organism of this _specie-esima
+					  compare_org = (Organism) _specie.getOrganisms().firstElement();
+				   // compare _organism-esimo('_organism') with first organism in current specie('compare_org')
+					  double curr_compat = 
+					  _organism.getGenome().compatibility(compare_org.getGenome()); 
+				   
+					  if (curr_compat < Neat.p_compat_threshold) 
+					  {
+					  //Found compatible species, so add this organism to it
+						 _specie.add_Organism(_organism);
+					  //update in organism pointer to its species 
+						 _organism.setSpecies(_specie);
+					  //force exit from this block ...
+						 done = true;
+					  }
+				   }
+				
+				// if no found species compatible , create specie 
+				   if (!done) 
+				   {
+					  newspecies = new Species(++counter); // create a new specie
+					  species.add(newspecies); // add this species to list of species
+					  newspecies.add_Organism(_organism);
+				   // Add to new species the current organism
+					  _organism.setSpecies(newspecies); // Point organism to its species
+				   
+				   }
+				
+				}
+			 
+			 }
+		  
+			 last_species = counter; //Keep track of highest species
+		  }
+	   
    
    /**
    * the increment of cur_node_id must be
