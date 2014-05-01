@@ -311,7 +311,7 @@ public class MEvolution {
 			// Extract the neural network from the jNEAT organism.
 			program = new PaintProgram(true, width, height); 
 			Painter painter = organismToPainter(org);
-			images.add(program.paintPicture(painter, paintTime));
+			images.add(program.paintPicture(painter, paintTime, true));
 			
 		}
 		

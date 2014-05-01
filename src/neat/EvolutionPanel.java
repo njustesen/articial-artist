@@ -19,7 +19,7 @@ public class EvolutionPanel extends JPanel implements MouseInputListener {
 	List<Integer> ids;
 	List<BufferedImage> pictures;
 	List<BufferedImage> selected;
-	
+	int shiftSelected = -1;
 	JScrollPane scrollPane;
 	int width;
 	int height;
@@ -89,15 +89,13 @@ public class EvolutionPanel extends JPanel implements MouseInputListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		
-		
-		
+
 		int x = arg0.getX();
 		int y = arg0.getY();
 		
 		if (pictures.isEmpty())
 			return;
-			
+		
 		int w = pictures.get(0).getWidth();
 		int h = pictures.get(0).getHeight();
 		
@@ -109,11 +107,16 @@ public class EvolutionPanel extends JPanel implements MouseInputListener {
 		if (pictures.size() < n)
 			return;
 		
-		if (selected.contains(pictures.get(n)))
-			selected.remove(pictures.get(n));
-		else
-			selected.add(pictures.get(n));
+		if (arg0.isShiftDown()) {
+			shiftSelected = n;
+		}
 		
+		else {
+			if (selected.contains(pictures.get(n)))
+				selected.remove(pictures.get(n));
+			else
+				selected.add(pictures.get(n));
+		}				
 	}
 
 	@Override

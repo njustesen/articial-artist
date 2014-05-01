@@ -59,7 +59,7 @@ public class EvolutionExperiment {
 //				null);
 		
 		Painter painter = evolution.evolvePainter(
-				200,	/* Paint time */
+				100,	/* Paint time */
 				1000,/* Iterations in evolution */
 				true);	
 		
