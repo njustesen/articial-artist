@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import neat.MEvolution;
+import neat.MEvolution2;
 import neat.NEvolution;
 import neat.Painter;
 import neat.Evolution;
@@ -27,14 +28,14 @@ public class EvolutionExperiment {
 			e.printStackTrace();
 		}
 		
-		MEvolution evolution = new MEvolution(
+		MEvolution2 evolution = new MEvolution2(
 				11, 	/* Number of inputs */
 				10, 	/* Number of outputs */
-				12, 		/* Population size */
+				8, 		/* Population size */
 				40,		/* Max. number of nodes */
 				300,	/* Picture width */
 				300,	/* Picture height */
-				goal); 
+				null); 
 
 //		NEvolution evolution = new NEvolution(
 //				10, 	/* Number of inputs */
@@ -59,9 +60,9 @@ public class EvolutionExperiment {
 //				null);
 		
 		Painter painter = evolution.evolvePainter(
-				5000,	/* Paint time */
+				200,	/* Paint time */
 				1000,/* Iterations in evolution */
-				true);	
+				false);	
 		
 	}
 
