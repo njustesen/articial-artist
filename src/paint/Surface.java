@@ -20,7 +20,7 @@ class Surface extends JPanel {
 		this.setPreferredSize(new Dimension(width, height));
 		this.image = new BufferedImage ( width, height, BufferedImage.TYPE_INT_ARGB );
 		g = this.image.createGraphics();
-		g.setColor( Color.white );
+		g.setColor( Color.black );
 		g.fillRect(0, 0, width, height);
 		
 	}
