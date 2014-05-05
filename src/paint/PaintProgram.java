@@ -49,7 +49,7 @@ public class PaintProgram extends JPanel{
 		this.imgHeight = imgHeight;
 		this.color = Color.white;
 		this.brushSize = 1;
-		this.maxBrushSize = imgWidth / 6;
+		this.maxBrushSize = imgWidth / 7;
 		//this.maxBrushSize = 1;
 		this.liftLimit = 0.95;
 		if (line==null)

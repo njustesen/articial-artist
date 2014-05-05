@@ -5,12 +5,15 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.security.auth.login.Configuration;
 
 import neat.MEvolution;
 import neat.MEvolution2;
 import neat.NEvolution;
 import neat.Painter;
 import neat.Evolution;
+import config.Config;
+import config.EvolutionMethod;
 
 public class EvolutionExperiment {
 
@@ -19,51 +22,70 @@ public class EvolutionExperiment {
 	 */
 	public static void main(String[] args) {
 		
+		try {
+			Config.load();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
 		BufferedImage goal = null;
 		try {
 			//goal = ImageIO.read(new File("monalisa_small.jpg"));
-			goal = ImageIO.read(new File("Atest.jpg"));
+			if (Config.goalImage != null)
+				goal = ImageIO.read(new File(Config.goalImage));
 			//goal = ImageIO.read(new File("blacktest.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		MEvolution2 evolution = new MEvolution2(
-				11, 	/* Number of inputs */
-				10, 	/* Number of outputs */
-				8, 		/* Population size */
-				40,		/* Max. number of nodes */
-				300,	/* Picture width */
-				300,	/* Picture height */
-				null); 
-
-//		NEvolution evolution = new NEvolution(
-//				10, 	/* Number of inputs */
-//				10, 	/* Number of outputs */
-//				6, 		/* Population size */
-//				40,		/* Max. number of nodes */
-//				600,	/* Picture width */
-//				450,	/* Picture height */
-//				2, 		/* Number of pictures selected (champions) */
-//				2, 		/* Number novel artists created each epoch */
-//				null); 
-
-//		Evolution evolution = new Evolution(
-//				10, 	/* Number of inputs */
-//				10, 	/* Number of outputs */
-//				16, 		/* Population size */
-//				5,		/* Max. number of nodes */
-//				300,	/* Picture width */
-//				300,	/* Picture height */
-//				2, 		/* Number of pictures selected (champions) */
-//				2, 		/* Number novel artists created each epoch */
-//				null);
-		
-		Painter painter = evolution.evolvePainter(
-				200,	/* Paint time */
-				1000,/* Iterations in evolution */
-				false);	
-		
+		if (Config.evolution == EvolutionMethod.MUTATION){
+			MEvolution2 evolution = new MEvolution2(
+					10, 						/* Number of inputs */
+					10, 						/* Number of outputs */
+					Config.populationSize, 		/* Population size */
+					Config.maxNodes,			/* Max. number of nodes */
+					Config.pictureWidth,		/* Picture width */
+					Config.pictureHeight,		/* Picture height */
+					goal); 
+			
+			Painter painter = evolution.evolvePainter(
+					Config.paintTime,	/* Paint time */
+					1000,/* Iterations in evolution */
+					(goal != null));	
+		} else if (Config.evolution == EvolutionMethod.MATING){
+			NEvolution evolution = new NEvolution(
+					10, 						/* Number of inputs */
+					10, 						/* Number of outputs */
+					Config.populationSize, 		/* Population size */
+					Config.maxNodes,			/* Max. number of nodes */
+					Config.pictureWidth,		/* Picture width */
+					Config.pictureHeight,		/* Picture height */
+					Config.champions,			/* Number of pictures selected (champions) */
+					Config.novel,				/* Number novel artists created each epoch */
+					goal); 
+			
+			Painter painter = evolution.evolvePainter(
+					Config.paintTime,	/* Paint time */
+					1000,/* Iterations in evolution */
+					(goal != null));	
+		} else if (Config.evolution == EvolutionMethod.MATING){
+			
+			Evolution evolution = new Evolution(
+					10, 						/* Number of inputs */
+					10, 						/* Number of outputs */
+					Config.populationSize, 		/* Population size */
+					Config.maxNodes,			/* Max. number of nodes */
+					Config.pictureWidth,		/* Picture width */
+					Config.pictureHeight,		/* Picture height */
+					Config.champions, 			/* Number of pictures selected (champions) */
+					Config.novel, 				/* Number novel artists created each epoch */
+					goal);
+			
+			Painter painter = evolution.evolvePainter(
+					Config.paintTime,	/* Paint time */
+					1000,/* Iterations in evolution */
+					(goal != null));	
+		}
 	}
 
 }
