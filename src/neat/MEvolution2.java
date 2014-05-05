@@ -59,7 +59,7 @@ public class MEvolution2 {
 		// Generate populations
 		while(pops.size() < popSize){
 			pops.add(new Population(	
-					1 /* population size */, 
+					3 /* population size */, 
 					numInputs /* network inputs */ , 
 					numOutputs /* network outputs */, 
 					maxNodes /* max index of nodes */, 
@@ -75,7 +75,7 @@ public class MEvolution2 {
 			
 			pictures = paint(imgWidth, imgHeight, paintTime);
 			
-			pickBest();
+			pickBest(goal);
 			
 			mutate(pops.get(0), i);
 			
@@ -140,7 +140,7 @@ public class MEvolution2 {
 		pop.epoch(0);
 	}
 
-	private void pickBest() {
+	private void pickBest(boolean goal) {
 		
 		panel.clearPictures();
 		List<Integer> ids = new ArrayList<Integer>();
@@ -149,26 +149,43 @@ public class MEvolution2 {
 		
 		panel.addPictures(pictures, ids);
 		
-		// While champions not selected keep showing paintings
-		while(panel.getSelected().isEmpty()){
+		BufferedImage bestPic = null;
+		
+		if(goal){
+			double lowestDiff = Double.MAX_VALUE;
+			int idx = 0;
+			for(BufferedImage picture : pictures){
+				double diff = ImageComparer.difference(goalImage, picture);
+				if (diff < lowestDiff){
+					idx = pictures.indexOf(picture);
+					lowestDiff = diff;
+				}
+			}
+			bestPic = pictures.get(idx);
+		} else {
+			// While champions not selected keep showing paintings
+			while(panel.getSelected().isEmpty()){
+				panel.repaint();
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			// Wait 1000 ms
 			panel.repaint();
 			try {
-				Thread.sleep(50);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
+			// Return best
+			bestPic = panel.getSelected().get(0);
 		}
 		
-		// Wait 1000 ms
-		panel.repaint();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		
-		// Return best
-		BufferedImage bestPic = panel.getSelected().get(0);
 		int idx = panel.getPictures().indexOf(bestPic);
 		
 		Population best = pops.get(idx);
@@ -179,50 +196,6 @@ public class MEvolution2 {
 		
 		pictures.clear();
 		pictures.add(bestPic);
-		
-	}
-	
-	private Population presentAndRate(List<Population> pops) {
-		
-		panel.clearPictures();
-		List<Integer> ids = new ArrayList<Integer>();
-		for(Population pop : pops){
-			for(Object obj : pop.getOrganisms()){
-				ids.add(((Organism)obj).getGenome().getGenome_id());
-				((Organism)obj).setFitness(0);
-			}
-		}
-		panel.addPictures(pictures, ids);
-		
-		// While champions not selected keep showing paintings
-		while(panel.getSelected().isEmpty()){
-			
-			panel.repaint();
-			
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-		}
-		
-		// Wait 1000 ms
-		panel.repaint();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		// Give fitness to selected pictures
-		for(BufferedImage goodPic : panel.getSelected()){
-			
-			int idx = panel.getPictures().indexOf(goodPic);
-			return pops.get(idx);
-			
-		}
-		return null;
 		
 	}
 

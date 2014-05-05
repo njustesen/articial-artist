@@ -22,7 +22,7 @@ public class EvolutionExperiment {
 		BufferedImage goal = null;
 		try {
 			//goal = ImageIO.read(new File("monalisa_small.jpg"));
-			goal = ImageIO.read(new File("face.jpg"));
+			goal = ImageIO.read(new File("Atest.jpg"));
 			//goal = ImageIO.read(new File("blacktest.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -49,8 +49,9 @@ public class PaintProgram extends JPanel{
 		this.imgHeight = imgHeight;
 		this.color = Color.white;
 		this.brushSize = 1;
-		this.maxBrushSize = imgWidth / 10;
-		this.liftLimit = 0.8;
+		this.maxBrushSize = imgWidth / 6;
+		//this.maxBrushSize = 1;
+		this.liftLimit = 0.95;
 		if (line==null)
 			setupSoundInput();
 	}
@@ -111,7 +112,7 @@ public class PaintProgram extends JPanel{
 			int yFrom = (int) controller.getPos().getY();
 			
 			// Input
-			double[] in = new double[101]; // Remember to set number of inputs
+			double[] in = new double[10]; // Remember to set number of inputs
 			in[0] = downscale(controller.getPos().getX(), imgWidth);
 			in[1] = downscale(controller.getPos().getY(), imgHeight);
 			in[2] = controller.getMove().getX();
@@ -147,8 +148,8 @@ public class PaintProgram extends JPanel{
 			} else {
 
 				// Extract and scale output
-				double moveX = controller.getMove().getX() + upscale(scaleNegative(scaleTowardsHalf(out[0])),imgWidth/32);
-				double moveY = controller.getMove().getY() + upscale(scaleNegative(scaleTowardsHalf(out[1])),imgHeight/32);
+				double moveX = controller.getMove().getX() + upscale(scaleNegative(scaleTowardsHalf(out[0])),(int)(imgWidth/(64*out[0])));
+				double moveY = controller.getMove().getY() + upscale(scaleNegative(scaleTowardsHalf(out[1])),(int)(imgHeight/(64*out[1])));
 				int red = (int)upscale(scaleTowardsHalf(out[2]), 255);
 				int green = (int)upscale(scaleTowardsHalf(out[3]), 255);
 				int blue = (int)upscale(scaleTowardsHalf(out[4]), 255);
@@ -174,12 +175,12 @@ public class PaintProgram extends JPanel{
 				//surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 */
 				if (!lift){
-					if (out[7] < 0.8)
+					if (out[7] < 0.7)
 						surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
-					else if (out[7] < 0.9)
-						surface.drawRoundRect(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
+					else if (out[7] < 0.8)
+						surface.drawRoundRect(xFrom, yFrom, controller.getPos().getX()*reposX, controller.getPos().getY()*reposY, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 					else
-						surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
+						surface.drawArc(xFrom, yFrom, controller.getPos().getX()*reposX, controller.getPos().getY()*reposY, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 				}
 					
 				if (lift || 
