@@ -15,6 +15,7 @@ import java.util.Vector;
 import javax.imageio.ImageIO;
 
 import comparer.ImageComparer;
+import config.Config;
 
 import paint.PaintProgram;
 
@@ -33,6 +34,7 @@ public class MEvolution2 {
 	private List<Population> pops;
 	private int nextId = 90000;
 	private List<BufferedImage> pictures;
+	private double fitness = 1;
 
 	public MEvolution2(int numInputs, int numOutputs, int popSize, int maxNodes, int picWidth, int picHeight, BufferedImage goal){
 		super();
@@ -68,6 +70,7 @@ public class MEvolution2 {
 		}
 		
 		// Run evolution
+		System.out.println("Epoch\tFitness");
 		for(int i = 1; i <= iterations; i++){
 			
 			if (i == iterations)
@@ -75,7 +78,8 @@ public class MEvolution2 {
 			
 			pictures = paint(imgWidth, imgHeight, paintTime);
 			
-			pickBest(goal);
+			pickBest(goal, i);
+			System.out.println(i + "\t" + fitness);
 			
 			mutate(pops.get(0), i);
 			
@@ -117,16 +121,16 @@ public class MEvolution2 {
 				org.getGenome().mutate_add_node(pop);
 			}
 			if (Math.random() > 0.50){
-				org.getGenome().mutate_add_link(pop,(int) (Math.random() * 1));
+				org.getGenome().mutate_add_link(pop,(int) (Math.random() * Config.mutationRate));
 			}
 			//if (Math.random() > 0.5){
-				org.getGenome().mutate_link_weight(Math.random()*1, Math.random()*1, NeatConstant.GAUSSIAN);
+				org.getGenome().mutate_link_weight(Math.random()*Config.mutationRate, Math.random()*Config.mutationRate, NeatConstant.GAUSSIAN);
 			//}
 			if (Math.random() > 0.5){
-				org.getGenome().mutate_link_trait((int) (Math.random() * 1));
+				org.getGenome().mutate_link_trait((int) (Math.random() * Config.mutationRate));
 			}
 			if (Math.random() > 0.5){
-				org.getGenome().mutate_node_trait((int) (Math.random() * 1));
+				org.getGenome().mutate_node_trait((int) (Math.random() * Config.mutationRate));
 			}
 			if (Math.random() > 0.5){
 				org.getGenome().mutate_random_trait();
@@ -140,7 +144,7 @@ public class MEvolution2 {
 		pop.epoch(0);
 	}
 
-	private void pickBest(boolean goal) {
+	private void pickBest(boolean goal, int i) {
 		
 		panel.clearPictures();
 		List<Integer> ids = new ArrayList<Integer>();
@@ -161,6 +165,7 @@ public class MEvolution2 {
 					lowestDiff = diff;
 				}
 			}
+			fitness = 1-lowestDiff;
 			bestPic = pictures.get(idx);
 		} else {
 			// While champions not selected keep showing paintings
@@ -183,6 +188,17 @@ public class MEvolution2 {
 			
 			// Return best
 			bestPic = panel.getSelected().get(0);
+			
+			// Save image
+			File outputfile = new File(Config.outputFolder + "best_" + i + ".png");
+			try {
+				ImageIO.write(bestPic, "png", outputfile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 		
 		

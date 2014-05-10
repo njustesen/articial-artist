@@ -23,10 +23,12 @@ public class Config {
 	public static double drawRoundRectPercentage;
 	public static int maxNodes;
 	public static int novel;
+	public static double mutationRate;
+	public static String outputFolder;
 	
-	public static void load() throws IOException{
+	public static void load(String file) throws IOException{
 		
-		BufferedReader br = new BufferedReader(new FileReader("config"));
+		BufferedReader br = new BufferedReader(new FileReader(file));
 	    try {
 	        StringBuilder sb = new StringBuilder();
 	        String line = br.readLine();
@@ -61,7 +63,7 @@ public class Config {
 			} else if (val.equalsIgnoreCase("mutation")){
 				evolution = EvolutionMethod.MUTATION;
 			} else {
-				evolution = EvolutionMethod.MATING;
+				evolution = EvolutionMethod.MUTATION;
 			}
 			
 		}
@@ -161,6 +163,18 @@ public class Config {
 			novel = Integer.parseInt(val);
 			
 		}
+		
+		if (var.equalsIgnoreCase("mutationRate")){
+			
+			mutationRate = Double.parseDouble(val);
+			
+		}
+		
+		if (var.equalsIgnoreCase("outputFolder")){
+			
+			outputFolder = val;
+			
+		}	
 		
 	}
 	

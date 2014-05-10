@@ -350,8 +350,8 @@
 		 //an average we can use to assign offspring.
 			if (final_expected < total_organisms) 
 			{
-			   System.out.print("\n Sorry : Population .has DIED +");
-			   System.out.print("\n ------------------------------");
+			   //System.out.print("\n Sorry : Population .has DIED +");
+			   //System.out.print("\n ------------------------------");
 			   itr_specie = species.iterator();
 			   while (itr_specie.hasNext()) 
 			   {

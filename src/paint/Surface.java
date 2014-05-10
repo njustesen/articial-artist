@@ -8,6 +8,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import config.Config;
+
 
 
 class Surface extends JPanel {
@@ -20,7 +22,7 @@ class Surface extends JPanel {
 		this.setPreferredSize(new Dimension(width, height));
 		this.image = new BufferedImage ( width, height, BufferedImage.TYPE_INT_ARGB );
 		g = this.image.createGraphics();
-		g.setColor( Color.black );
+		g.setColor( new Color(Config.backgroundColorR, Config.backgroundColorG, Config.backgroundColorB) );
 		g.fillRect(0, 0, width, height);
 		
 	}

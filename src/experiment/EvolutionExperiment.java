@@ -23,7 +23,7 @@ public class EvolutionExperiment {
 	public static void main(String[] args) {
 		
 		try {
-			Config.load();
+			Config.load(args[0]);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -31,10 +31,14 @@ public class EvolutionExperiment {
 		BufferedImage goal = null;
 		try {
 			//goal = ImageIO.read(new File("monalisa_small.jpg"));
-			if (Config.goalImage != null)
+			if (Config.goalImage != null){
 				goal = ImageIO.read(new File(Config.goalImage));
+				Config.pictureHeight = goal.getHeight();
+				Config.pictureWidth = goal.getWidth();
+			}
 			//goal = ImageIO.read(new File("blacktest.jpg"));
 		} catch (IOException e) {
+			System.out.println("Unable to find " + goal);
 			e.printStackTrace();
 		}
 		
@@ -50,7 +54,7 @@ public class EvolutionExperiment {
 			
 			Painter painter = evolution.evolvePainter(
 					Config.paintTime,	/* Paint time */
-					1000,/* Iterations in evolution */
+					Integer.MAX_VALUE,/* Iterations in evolution */
 					(goal != null));	
 		} else if (Config.evolution == EvolutionMethod.MATING){
 			NEvolution evolution = new NEvolution(
@@ -66,9 +70,9 @@ public class EvolutionExperiment {
 			
 			Painter painter = evolution.evolvePainter(
 					Config.paintTime,	/* Paint time */
-					1000,/* Iterations in evolution */
+					Integer.MAX_VALUE,/* Iterations in evolution */
 					(goal != null));	
-		} else if (Config.evolution == EvolutionMethod.MATING){
+		} else if (Config.evolution == EvolutionMethod.NEAT){
 			
 			Evolution evolution = new Evolution(
 					10, 						/* Number of inputs */
@@ -83,7 +87,7 @@ public class EvolutionExperiment {
 			
 			Painter painter = evolution.evolvePainter(
 					Config.paintTime,	/* Paint time */
-					1000,/* Iterations in evolution */
+					Integer.MAX_VALUE,/* Iterations in evolution */
 					(goal != null));	
 		}
 	}

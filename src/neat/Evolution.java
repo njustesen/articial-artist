@@ -88,6 +88,7 @@ public class Evolution {
 									0.5 /* probability of connecting two nodes */ );
 		
 		// Run evolution
+		System.out.println("Epoch\tFitness");
 		for(int i = 1; i <= iterations; i++){
 			
 			// Paint pictures
@@ -95,7 +96,7 @@ public class Evolution {
 			
 			// Show pictures and wait for feedback
 			if (goal)
-				presentAndCompare(neatPop, pictures);
+				presentAndCompare(neatPop, pictures, i);
 			else
 				presentAndRate(neatPop, pictures);
 			// Assign random fitness
@@ -156,7 +157,7 @@ public class Evolution {
 	}
 
 	private void presentAndCompare(Population neatPop,
-			List<BufferedImage> pictures) {
+			List<BufferedImage> pictures, int i) {
 		
 		panel.clearPictures();
 		List<Integer> ids = new ArrayList<Integer>();
@@ -187,7 +188,7 @@ public class Evolution {
 				double diff = ImageComparer.difference(goalImage, picture);
 				int idx = pictures.indexOf(picture);
 				double fitness = 1-diff;
-				fitness = fitness * 1000;
+				fitness = fitness;
 				if (fitness < lowestFitness){
 					lowestFitness = fitness;
 					lowestIdx = idx;
@@ -203,8 +204,8 @@ public class Evolution {
 			lowestFitness = Double.MAX_VALUE;
 		}
 		
-		System.out.println("Best fitness: " + bestFitness + "\tby: " + bestIdx + "\tnodes: " + pop.get(bestIdx).getNet().getAllnodes().size());
-		
+		//System.out.println("Best fitness: " + bestFitness + "\tby: " + bestIdx + "\tnodes: " + pop.get(bestIdx).getNet().getAllnodes().size());
+		System.out.println(i + "\t" + bestFitness);
 	}
 
 	private void presentAndRate(Population neatPop, List<BufferedImage> pictures) {

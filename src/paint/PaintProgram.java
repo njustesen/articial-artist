@@ -21,6 +21,8 @@ import javax.sound.sampled.TargetDataLine;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import config.Config;
+
 import neat.Painter;
 
 public class PaintProgram extends JPanel{
@@ -42,16 +44,16 @@ public class PaintProgram extends JPanel{
 	
 	public PaintProgram(boolean visual, int imgWidth, int imgHeight) {
 		super();
-		this.visual = visual;
+		this.visual = Config.goalImage == null;
 		this.controller = new Controller(new Vector2D(20, 20), new Vector2D(0, 0));
 		this.surface = new Surface(imgWidth, imgHeight);
-		this.imgWidth = imgWidth;
-		this.imgHeight = imgHeight;
+		this.imgWidth = Config.pictureWidth;
+		this.imgHeight = Config.pictureHeight;
 		this.color = Color.white;
 		this.brushSize = 1;
-		this.maxBrushSize = imgWidth / 7;
+		this.maxBrushSize = imgWidth / Config.brushFactor;
 		//this.maxBrushSize = 1;
-		this.liftLimit = 0.95;
+		this.liftLimit = Config.liftPercentage;
 		if (line==null)
 			setupSoundInput();
 	}
@@ -82,8 +84,10 @@ public class PaintProgram extends JPanel{
 
 	public BufferedImage paintPicture(Painter painter, int paintTime, boolean autoClose){
 		//if (visual) {
-		//setupSoundInput();
-		line.start();
+		if (Config.soundInput){
+			setupSoundInput();
+			line.start();
+		}
 			
 			frame = new JFrame();
 			//frame.setSize(1000,700);
@@ -117,7 +121,10 @@ public class PaintProgram extends JPanel{
 			in[1] = downscale(controller.getPos().getY(), imgHeight);
 			in[2] = controller.getMove().getX();
 			in[3] = controller.getMove().getY();
-			in[4] = (double)time / (double)paintTime;
+			if (Config.soundInput)
+				in[4] = soundLevel;
+			else
+				in[4] = (double)time / (double)paintTime;
 			//in[5] = 0.5;
 			//in[4] = 0.5;
 			//in[5] = soundLevel;
@@ -175,9 +182,9 @@ public class PaintProgram extends JPanel{
 				//surface.drawArc(xFrom, yFrom, controller.getPos().getX()*0.1, controller.getPos().getY()*0.1, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 */
 				if (!lift){
-					if (out[7] < 0.7)
+					if (out[7] < Config.drawLinePercentage)
 						surface.drawLine(xFrom, yFrom, controller.getPos().getX(), controller.getPos().getY(), color, brushSize);
-					else if (out[7] < 0.8)
+					else if (out[7] < Config.drawRoundRectPercentage)
 						surface.drawRoundRect(xFrom, yFrom, controller.getPos().getX()*reposX, controller.getPos().getY()*reposY, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);
 					else
 						surface.drawArc(xFrom, yFrom, controller.getPos().getX()*reposX, controller.getPos().getY()*reposY, upscale(scaleNegative(reposX),imgWidth/10), upscale(scaleNegative(reposY),imgWidth/10), color, brushSize);

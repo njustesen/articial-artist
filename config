@@ -21,7 +21,7 @@ pictureWidth = 300
 pictureHeight = 300
 
 # Number of steps each artist will paint
-paintTime = 500
+paintTime = 1000
 
 # The threshold for which the lift output must be higher 
 # in order to actually paint
@@ -38,7 +38,7 @@ drawLinePercentage = 0.7
 drawRoundRectPercentage = 0.8
 
 # The goal image used as fitness function. 
-# goalImage = Atest.jpg
+goalImage = goal.jpg
 
 # The background color in RGB (0-255).
 backgroundColorR = 0
@@ -47,3 +47,7 @@ backgroundColorB = 0
 
 # Use sound input?
 soundInput = false
+
+# Mutation rate
+# Medium level ~1.0
+mutationRate = 1.0

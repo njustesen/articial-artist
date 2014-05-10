@@ -66,6 +66,7 @@ public class NEvolution {
 		Npopulation = new ArrayList<Organism>(pop.organisms);
 		
 		// Run evolution
+		System.out.println("Epoch\tFitness");
 		for(int i = 1; i <= iterations; i++){
 			
 			// Paint pictures
@@ -73,7 +74,7 @@ public class NEvolution {
 			
 			// Show pictures and wait for feedback
 			if (goal)
-				presentAndCompare(Npopulation, pictures);
+				presentAndCompare(Npopulation, pictures, i);
 			else
 				presentAndRate(Npopulation, pictures, paintTime);
 			// Assign random fitness
@@ -81,7 +82,7 @@ public class NEvolution {
 			
 			if (i == iterations)
 				break;
-			
+		
 			// Evolutionize
 			//neatPop.epoch(i); // Evolve the population and increment the generation.
 			//if (!goal)
@@ -101,7 +102,7 @@ public class NEvolution {
 	}
 
 	private void presentAndCompare(List<Organism> pop,
-			List<BufferedImage> pictures) {
+			List<BufferedImage> pictures, int iteration) {
 		
 		panel.clearPictures();
 		List<Integer> ids = new ArrayList<Integer>();
@@ -145,8 +146,8 @@ public class NEvolution {
 			lowestFitness = Double.MAX_VALUE;
 		}
 		
-		System.out.println("Best fitness: " + bestFitness + "\tby: " + bestIdx + "\tnodes: " + pop.get(bestIdx).getNet().getAllnodes().size());
-		
+		//System.out.println("Best fitness: " + bestFitness + "\tby: " + bestIdx + "\tnodes: " + pop.get(bestIdx).getNet().getAllnodes().size());
+		System.out.println(iteration + "\t" + bestFitness);
 	}
 
 	private List<Organism> epoch(List<Organism> pop, int generation) {
