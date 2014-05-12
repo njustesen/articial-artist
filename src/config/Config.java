@@ -38,6 +38,9 @@ public class Config {
 	            line = br.readLine();
 	        }
 	        
+	    } catch (Exception e) {
+	    	System.out.println("Could not load config file at " + file);
+	    	System.out.println(e);
 	    } finally {
 	        br.close();
 	    }
@@ -65,114 +68,133 @@ public class Config {
 			} else {
 				evolution = EvolutionMethod.MUTATION;
 			}
+			System.out.println("Evolution mode set to " + evolution.name());
 			
 		}
 		
 		if (var.equalsIgnoreCase("populationSize")){
 			
 			populationSize = Integer.parseInt(val);
+			System.out.println("populationSize parsed to " + populationSize);
 			
 		}
 		
 		if (var.equalsIgnoreCase("pictureWidth")){
 			
 			pictureWidth = Integer.parseInt(val);
+			System.out.println("pictureWidth parsed to " + pictureWidth);
 			
 		}
 		
 		if (var.equalsIgnoreCase("pictureHeight")){
 			
 			pictureHeight = Integer.parseInt(val);
+			System.out.println("pictureHeight parsed to " + pictureHeight);
 			
 		}
 		
 		if (var.equalsIgnoreCase("champions")){
 			
 			champions = Integer.parseInt(val);
+			System.out.println("champions parsed to " + champions);
 			
 		}
 		
 		if (var.equalsIgnoreCase("paintTime")){
 			
 			paintTime = Integer.parseInt(val);
+			System.out.println("paintTime parsed to " + paintTime);
 			
 		}
 		
 		if (var.equalsIgnoreCase("goalImage")){
 			
 			goalImage = val;
+			System.out.println("goalImage parsed to " + goalImage);
 			
 		}
 		
 		if (var.equalsIgnoreCase("liftPercentage")){
 			
 			liftPercentage = Double.parseDouble(val);
+			System.out.println("liftPercentage parsed to " + liftPercentage);
 			
 		}
 		
 		if (var.equalsIgnoreCase("brushFactor")){
 			
 			brushFactor = Integer.parseInt(val);
+			System.out.println("brushFactor parsed to " + brushFactor);
 			
 		}
 		
 		if (var.equalsIgnoreCase("backgroundColorR")){
 			
 			backgroundColorR = Integer.parseInt(val);
+			System.out.println("backgroundColorR parsed to " + backgroundColorR);
 			
 		}
 		
 		if (var.equalsIgnoreCase("backgroundColorG")){
 			
 			backgroundColorG = Integer.parseInt(val);
+			System.out.println("backgroundColorG parsed to " + backgroundColorG);
 			
 		}
 		
 		if (var.equalsIgnoreCase("backgroundColorB")){
 			
 			backgroundColorB = Integer.parseInt(val);
+			System.out.println("backgroundColorB parsed to " + backgroundColorB);
 			
 		}
 		
 		if (var.equalsIgnoreCase("soundInput")){
 			
 			soundInput = Boolean.parseBoolean(val);
+			System.out.println("soundInput parsed to " + soundInput);
 			
 		}
 		
 		if (var.equalsIgnoreCase("drawLinePercentage")){
 			
 			drawLinePercentage = Double.parseDouble(val);
+			System.out.println("drawLinePercentage parsed to " + drawLinePercentage);
 			
 		}
 		
 		if (var.equalsIgnoreCase("drawRoundRectPercentage")){
 			
 			drawRoundRectPercentage = Double.parseDouble(val);
+			System.out.println("drawRoundRectPercentage parsed to " + drawRoundRectPercentage);
 			
 		}
 		
 		if (var.equalsIgnoreCase("maxNodes")){
 			
 			maxNodes = Integer.parseInt(val);
+			System.out.println("maxNodes parsed to " + maxNodes);
 			
 		}
 		
 		if (var.equalsIgnoreCase("novel")){
 			
 			novel = Integer.parseInt(val);
+			System.out.println("novel parsed to " + novel);
 			
 		}
 		
 		if (var.equalsIgnoreCase("mutationRate")){
 			
 			mutationRate = Double.parseDouble(val);
+			System.out.println("mutationRate parsed to " + mutationRate);
 			
 		}
 		
 		if (var.equalsIgnoreCase("outputFolder")){
 			
 			outputFolder = val;
+			System.out.println("outputFolder parsed to " + outputFolder);
 			
 		}	
 		

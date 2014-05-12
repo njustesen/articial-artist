@@ -79,7 +79,7 @@ public class MEvolution2 {
 			pictures = paint(pops, imgWidth, imgHeight, paintTime, true);
 			
 			pickBest(goal, i, paintTime);
-			System.out.println(i + "\t" + fitness);
+			//System.out.println(i + "\t" + fitness);
 			
 			mutate(pops.get(0), i);
 			
@@ -206,7 +206,7 @@ public class MEvolution2 {
 			try {
 				ImageIO.write(bestPic, "png", outputfile);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.out.println("Unable to save file to " + outputfile.getName());
 				e.printStackTrace();
 			}
 			
