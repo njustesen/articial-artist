@@ -1,0 +1,20 @@
+1) Vis kunstner
+	1.1) Fil med tal
+	1.2) Forklare om projekt 3 minutter 
+	1.3) Evolutionært kunst
+		1.3.1) Startet af Richard Dawkins - evolutionsteoretiker of forfatter
+		1.3.2) Efterfulgt af mange andre med forskellige metoder
+		1.3.3) Interessante værker, men brug for kunstnerisk feedback
+		1.3.4) Hvad er interessant for kunstnere at se? Vi er bare programmøre..
+2) Kunstigt Neuralt Netværk
+	2.1) Komplekse netværk af neuroner og synapser der sender signaler
+	2.2) Input: 	Pensel - størrelse, farve, bevægelse, position, løftet/ikke-løftet
+	2.3) Output: 	Pensel - størrelse, farve, bevægelse, position, løftet/ikke-løftet
+	2.4) Generer tilfældige neurale netværks
+3) Evolution
+	3.1) Hvordan evolution kan skabe kompleksitet
+	3.2) Survival of the fittest - malerier?
+	3.3) Mutation - guidet af menneske med viden om æstetik 
+4) Præsenter evolutionsprogram
+	4.1) Kan tage lang tid at komme hen til noget flot
+	4.2) Nogle gange sætter den sig fast i en bestemt stil der er uinteressant

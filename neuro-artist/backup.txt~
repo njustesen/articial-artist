@@ -1,0 +1,200 @@
+\documentclass[conference]{IEEEtran}
+% If the IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it.  e.g.
+% \documentclass[conference]{./IEEEtran}
+
+% Add and required packages here
+\usepackage{graphicx,times,amsmath}
+
+% Correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor IEEEtran}
+
+% To create the author's affliation portion using \thanks
+\IEEEoverridecommandlockouts
+
+\textwidth 178mm
+\textheight 239mm
+\oddsidemargin -7mm
+\evensidemargin -7mm
+\topmargin -6mm
+\columnsep 5mm
+
+\begin{document}
+
+% Project title: keep the \ \\ \LARGE\bf in it to leave enough margin.
+\title{\ \\ \LARGE\bf Generating art with NeuroEvolution of Augmenting Topologies }
+
+\author{Christian Rebsdorf and Niels Justesen}
+
+% Uncomment out the following line for invited papers
+%\specialpapernotice{(Invited Paper)}
+
+% Make the title area
+\maketitle
+
+\begin{abstract}
+
+We suggest that you read this document carefully before you begin
+preparing your manuscript.
+
+This template is for LaTeX users of the Advanced AI in games class.
+Authors should use this sample paper as a guide in the production of
+their report(s).
+\end{abstract}
+
+\section{Introduction and problem statement}
+In this project we have applied Artificial Neural Networks (ANN) to control a simple graphical painting program to generate aesthetic 2D Evolutionary Art. Furthermore, we have used a method called NeuroEvolution of Augmenting Topologies (NEAT) to evolve various ANNs guided by human interaction which in turn produces various artistical expressions. The ANNs were restricted to only use low-level drawing primitives for two reasons. First, to avoid predetermination of a certain artistic style as a solution space with a large variety of styles should be more interesting to explore. Second, many Evolutionary Art systems mentioned in the extensive overview of these by Romero and Machado \cite{romero} are focused on high-level drawing methods and advanced effects such as reuse of existing images. 
+
+It is often seen that Evolutionary Art systems, such as Picbreeder and ..., can produce many interesting images without the user knowing much about art theory. This pattern was also achieved for our system and additionnaly some of the images were presented to real artists which analysed the images without knowing the "painter". ... complete later...
+
+In his work (and also in
+Dorin’s critique of aesthetic selection in artiﬁcial evolution [182]) the need is
+discussed for more art theory in evolutionary art
+
+- sound
+
+- paint existing images..
+
+What problem are you trying to solve? Why is this important?
+
+- Connect ANN to painting program
+- Apply interactive supervision to learn how to paint awesome pictures
+- Image comparison as fitness function to learn how to paint existing pictures
+- Add human input to interact with artificial painter.
+
+\section{Background}
+Has this been done before? How? If not, what’s the closest related research? (Both using similar approaches and other algorithms.) What’s novel with your research?
+
+\subsection{Evolutionary art and robotic artists}
+The notion of artificially creating visual art is not a new phenomenon. Since the 1970s Harold Cohen has continually iterated upon his software program AARON which via a robot is capable of producing original art paintings\cite{cohen} It generates paintings based on its knowledge about shapes and forms of different objects – thus it can only paint what it knows about. ``I don't tell it what to do. I tell it what it knows, and IT decides what to do.''\cite{cohen2}
+The idea of generating graphical patterns based on interactive evolution comes from Richard Dawkins in 1986 as he, as an argument for why natural selection could have evolved such complex systems as human life, created a small computer program to evolve small images of animal-like shapes.\cite{dawkins}. The utilization of evolutionary algorithms to produce visual art was introduced by Carl Sims in 1991.\cite{sims} The images produced were both complex and beautiful and sparked a great interest in the field of evolutionary art.
+Evolving artificial neural networks to produce images have amongst others been undertaken by Mattias Fagerlund who in 2006 used the NEAT infrastructure to evolve complex neural networks that produced the images in “FIG XX”.\cite{fagerlund}
+The Picbreeder project from 2008 is another example of using NEAT to interactively evolve images. With its online interface users can collaborate to produce complex and interesting images regardless of their artistic or technical knowledge.\cite{picbreeder}
+
+
+
+\subsection{Evolutionary algortihms}
+Evolutionary algorithms are optimization problem solving algorithms. The inspiration comes from natural evolution which is mimicked as a computational algorithm. Starting with an initial population of different individuals corresponding to different solutions to the problem, the fitness of the population is evaluated based on how good of a solution each of them are. The population is then evolved using some of the key factors from natural evolution. Individuals can for example be crossed over (paired) and mutated to produce a new set of individuals which likewise are evaluated. In line with natural selection the least fit individuals of the previous generation are eliminated and replaced by the fitter ones from the new generation. This process is repeated until some terminating criteria are met e.g. a sufficiently high fitness is achieved or a time limit is reached.
+
+\subsection{Artificial Neural Networks}
+Niels - torsdag
+The human brain is one of the most complex systems we know of but is, as many other things in nature, constructed of only a few basic ingredients \cite{ann}. The basic ingredients mainly consist of neurons and synapses. The human brain has approximately $3 \times 10^{10}$ neurons which receives and sends electrical signals \cite{ann}. Synapses work like wires as they connect neruons and enables them to communicate. Artificial Neural Networks (ANNs) try to mimic these basic ingredients of the brain and is often used for pattern recognition \cite{ann}, controlling robots \cite{robotics-neural} and even for controlling enemies in computer games \cite{pc-game-neural}. 
+
+ANNs are modelled as a directed acyclid graph where each node represents a neuron and each edge represent a synapse. Neurons in ANNs can have many topologies but are typically seperated in three layers with an input layer, hidden layer and output layer. When the network is activated each node in the hidden layer receives a normalized input often between -1 and 1 or 0 and 1 and sends this value to all their connected neurons in the hidden layer through their synapses. Each synapse has a weight associated to it representing the how much of the input that gets passed through. The nodes in the hidden layer will in the same way pass on the signals on to the nodes in the output layer. 
+
+Maybe a figure showing an ANN with weights and a formula showing how weights work.
+
+Bias nodes?
+
+How can we learn -> Backpropagation and neuroevolution.
+
+% https://blog.itu.dk/MAIG-E2012/files/2012/08/notes.pdf
+
+\subsection{Neuroevolution and NEAT}
+Niels - torsdag
+
+
+% https://learnit.itu.dk/pluginfile.php/97055/mod_resource/content/1/evolutionary_robotics_and_neuroevolution.pdf
+
+\section{Methods}
+
+How does your algorithm/idea work? Describe in as much detail as you can fit into the report. 
+
+\subsection{Simple painting program}
+Christian
+
+\subsection{JNeat}
+Niels - fredag
+
+\subsection{Interactive supervision}
+Niels - lørdag
+
+\subsection{Image comparison}
+Niels - lørdag
+
+\subsection{Human inputs}
+Christian
+
+\subsection{Configurations}
+Input / output
+
+\section{Results}
+
+\subsection{Example results}
+
+
+\subsection{Painting analysis}
+A portfolio of 34 images \ref{portfolio} created with our program where presented to the students of the art class Musicon Art (Roskilde, Denmark) without any introduction of the "artist". The students thus analysed the images while initially thinking the artist was a human. It was arranged this way to have a non-baised analysis with the focus on the results and not on the sender [can you say sender in english? better word].
+
+The students gave a lot of critique to each image and most of it fell into one of these four categories: 
+
+\begin{enumerate}
+  \item The main critique of the images presented was regarding the composition. Often the visual elements were positioned in places that gave the image a poor balance and in many cases large areas of the canvas was not used which created a negative reaction amongst the students. 
+  \item Another point of critique was the choice of colors and especially the combinations of these. A lot of the images was either lacking energy as the colors were too dull or too garish. Also, many of the images contained colors that did not complement each other very well. 
+  \item Many of the students were missing depth in the images as they, except for a few, did not have any layers. \ldots
+  \item A general critique was .. no soul and did not show any feelings. Nature, systematic. Same type of strokes. Clear, no dripping or imprecisions.  \ldots
+\end{enumerate}
+
+Despite the harsh critique a few images was selected which had good composition, color complementations and generally was received well even though they still lacked ...
+
+
+
+\subsection{Performance}
+- Time to produce a picture
+- Image size
+- Epoch in evolution - time
+
+\subsection{Painting existing paintings}
+- Niels - søndag
+
+\subsection{Human inputs}
+- Test with students - no
+- Test with and without
+- Christian
+
+\section{Discussion}
+What are the strengths and shortcomings of your method? Why did you choose method X instead of Y? How would you develop it further, if you had time?
+
+\begin{thebibliography}{3}
+\bibitem{dawkins}
+R.~Dawkins, \emph{The Blind Watchmaker}, 1986 \hskip 1em plus 0.5em minus 0.4em\relax
+
+\bibitem{levin}
+G.~Levin, J.~Feinberg, and C.~Curtis, \emph{Alphabet synthesis machine}, //alphabet.tmema.org, 2006
+
+\bibitem{romero}
+J.~Romero, P.~Machado, \emph{The Art of Artificial Evolution}, A Handbook on Evolutionary Art and Music, Springer, 2008.
+
+\bibitem{ann}
+J.~Romero, P.~Machado, \emph{Neural networks: an introduction}, AI Applications Institute University of Edinburgh, 1999.
+
+\bibitem{robotics-neural}
+P.~Ross, \emph{Evolving Coordinated Quadruped Gaits with the HyperNEAT Generative Encoding}, In proceedings of the 2009 IEEE Congress on Evolutionary Computation (CEC), 2009.
+
+\bibitem{pc-game-neural}
+M.~Parker, B.~Bryant, \emph{Backpropagation without Human Supervision for Visual Control in Quake II}, In proceedings of the IEEE 2009 Symposium on Computational Intelligence and Games (CIG’09), 2009.
+
+\bibitem{cohen}
+http://www.aaronshome.com/aaron/index.html
+
+\bibitem{cohen2}
+http://www.pbs.org/safarchive/3\_ask/archive/qna/3284\_cohen.html
+
+\bibitem{fagerlund}
+Fagerlund, M. (2006). GeneticArt. http://www.cambrianlabs.com/mattias/GeneticArt
+
+\bibitem{picbreeder}
+Secretan et al. (2008). Picbreeder: Evolving Pictures Collaboratively Online. In Proceedings of the Computer Human Interaction Conference (CHI 2008). New York, NY: ACM, 2008
+
+\bibitem{sims}
+Sims, K. (1991). Artificial evolution for computer graphics. ACM Computer Graphics.
+
+
+\end{thebibliography}
+
+
+
+\section*{Appendix}
+
+% That's all folks...
+\end{document}

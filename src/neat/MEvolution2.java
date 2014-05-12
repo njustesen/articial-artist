@@ -76,9 +76,9 @@ public class MEvolution2 {
 			if (i == iterations)
 				break;
 			
-			pictures = paint(imgWidth, imgHeight, paintTime);
+			pictures = paint(pops, imgWidth, imgHeight, paintTime, true);
 			
-			pickBest(goal, i);
+			pickBest(goal, i, paintTime);
 			System.out.println(i + "\t" + fitness);
 			
 			mutate(pops.get(0), i);
@@ -144,7 +144,7 @@ public class MEvolution2 {
 		pop.epoch(0);
 	}
 
-	private void pickBest(boolean goal, int i) {
+	private void pickBest(boolean goal, int i, int paintTime) {
 		
 		panel.clearPictures();
 		List<Integer> ids = new ArrayList<Integer>();
@@ -171,6 +171,17 @@ public class MEvolution2 {
 			// While champions not selected keep showing paintings
 			while(panel.getSelected().isEmpty()){
 				panel.repaint();
+				
+				if (panel.shiftSelected != -1) {
+					List<Population> p = new ArrayList<Population>();
+					p.add(pops.get(panel.shiftSelected));
+					boolean si = Config.soundInput;
+					Config.soundInput = true;
+					paint(p, Config.pictureWidth, Config.pictureHeight, paintTime, false);
+					Config.soundInput = si;
+					panel.shiftSelected = -1;
+				}
+				
 				try {
 					Thread.sleep(50);
 				} catch (InterruptedException e) {
@@ -180,6 +191,7 @@ public class MEvolution2 {
 			
 			// Wait 1000 ms
 			panel.repaint();
+			
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -215,18 +227,18 @@ public class MEvolution2 {
 		
 	}
 
-	private List<BufferedImage> paint(int width, int height, int paintTime) {
+	private List<BufferedImage> paint(List<Population> populations, int width, int height, int paintTime, boolean autoClose) {
 		
 		PaintProgram program = new PaintProgram(true, width, height); 
 		List<BufferedImage> images = new ArrayList<BufferedImage>();
 		
 		//for(int i=0;i<popSize;i++){
-		for(Population pop : pops){
+		for(Population pop : populations){
 			// Extract the neural network from the jNEAT organism.
 			program = new PaintProgram(true, width, height); 
 			Organism org = ((Organism)pop.getOrganisms().get(0));
 			Painter painter = organismToPainter(org);
-			images.add(program.paintPicture(painter, paintTime, true));
+			images.add(program.paintPicture(painter, paintTime, autoClose));
 		}
 		
 		return images;

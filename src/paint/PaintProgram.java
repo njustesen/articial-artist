@@ -84,6 +84,9 @@ public class PaintProgram extends JPanel{
 
 	public BufferedImage paintPicture(Painter painter, int paintTime, boolean autoClose){
 		//if (visual) {
+		
+		long start = System.currentTimeMillis();
+		
 		if (Config.soundInput){
 			setupSoundInput();
 			line.start();
@@ -217,6 +220,11 @@ public class PaintProgram extends JPanel{
 		
 			line.stop();
 			
+		long stop = System.currentTimeMillis();	
+		
+		long t = stop - start;
+		System.out.println(t);
+		
 		return surface.getImage();
 		
 	}

@@ -1,0 +1,327 @@
+\documentclass[conference]{IEEEtran}
+% If the IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it.  e.g.
+% \documentclass[conference]{./IEEEtran}
+
+% Add and required packages here
+\usepackage{graphicx,times,amsmath}
+
+% Correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor IEEEtran}
+
+% To create the author's affliation portion using \thanks
+\IEEEoverridecommandlockouts
+
+\textwidth 178mm
+\textheight 239mm
+\oddsidemargin -7mm
+\evensidemargin -7mm
+\topmargin -6mm
+\columnsep 5mm
+
+\begin{document}
+
+% Project title: keep the \ \\ \LARGE\bf in it to leave enough margin.
+\title{\ \\ \LARGE\bf Generating art with NeuroEvolution of Augmenting Topologies }
+
+\author{Christian Rebsdorf and Niels Justesen}
+
+% Uncomment out the following line for invited papers
+%\specialpapernotice{(Invited Paper)}
+
+% Make the title area
+\maketitle
+
+\begin{abstract}
+
+We suggest that you read this document carefully before you begin
+preparing your manuscript.
+
+This template is for LaTeX users of the Advanced AI in games class.
+Authors should use this sample paper as a guide in the production of
+their report(s).
+\end{abstract}
+
+\section{Introduction and problem statement}
+In this project we have applied Artificial Neural Networks (ANN) to control a simple graphical painting program to generate aesthetic 2D Evolutionary Art. Furthermore, we have used a method called NeuroEvolution of Augmenting Topologies (NEAT) to evolve various ANNs guided by human interaction which in turn produces various artistical expressions. The ANNs were restricted to only use low-level drawing primitives for two reasons. First, to avoid predetermination of a certain artistic style as a solution space with a large variety of styles should be more interesting to explore. Second, many Evolutionary Art systems mentioned in the extensive overview of these by Romero and Machado \cite{romero} are focused on high-level drawing methods and advanced effects such as reuse of existing images. 
+
+It is often seen that Evolutionary Art systems, such as Picbreeder and ..., can produce many interesting images without the user knowing much about art theory. This pattern was also achieved for our system and additionnaly some of the images were presented to real artists which analysed the images without knowing the "painter". ... complete later...
+
+In his work (and also in
+Dorin’s critique of aesthetic selection in artiﬁcial evolution [182]) the need is
+discussed for more art theory in evolutionary art
+
+- sound
+
+- paint existing images..
+
+What problem are you trying to solve? Why is this important?
+
+- Connect ANN to painting program
+- Apply interactive supervision to learn how to paint awesome pictures
+- Image comparison as fitness function to learn how to paint existing pictures
+- Add human input to interact with artificial painter.
+
+\section{Background}
+Has this been done before? How? If not, what’s the closest related research? (Both using similar approaches and other algorithms.) What’s novel with your research?
+
+\subsection{Evolutionary art and robotic artists}
+The notion of artificially creating visual art is not a new phenomenon. Since the 1970s Harold Cohen has continually iterated upon his software program AARON which via a robot is capable of producing original art paintings\cite{cohen} It generates paintings based on its knowledge about shapes and forms of different objects – thus it can only paint what it knows about. ``I don't tell it what to do. I tell it what it knows, and IT decides what to do.''\cite{cohen2}
+The idea of generating graphical patterns based on interactive evolution comes from Richard Dawkins in 1986 as he, as an argument for why natural selection could have evolved such complex systems as human life, created a small computer program to evolve small images of animal-like shapes.\cite{dawkins}. The utilization of evolutionary algorithms to produce visual art was introduced by Carl Sims in 1991.\cite{sims} The images produced were both complex and beautiful and sparked a great interest in the field of evolutionary art.
+Evolving artificial neural networks to produce images have amongst others been undertaken by Mattias Fagerlund who in 2006 used the NEAT infrastructure to evolve complex neural networks that produced images such as the one shown in “FIG XX”.\cite{fagerlund}
+The Picbreeder project from 2008 is another example of using NEAT to interactively evolve images. With its online interface users can collaborate to produce complex and interesting images regardless of their artistic or technical knowledge.\cite{picbreeder}
+
+\begin{figure}[ht]
+\centerline{\includegraphics[width=1.5in]{fagerlund.jpg}}
+\caption{An image produced using NEAT}
+\end{figure}
+
+
+\subsection{Evolutionary algortihms}
+Evolutionary algorithms are optimization problem solving algorithms. The inspiration comes from natural evolution which is mimicked as a computational algorithm. Starting with an initial population of different individuals corresponding to different solutions to the problem, the fitness of the population is evaluated based on how good of a solution each of them are. The population is then evolved using some of the key factors from natural evolution. Individuals can for example be crossed over (paired) and mutated to produce a new set of individuals which likewise are evaluated. In line with natural selection the least fit individuals of the previous generation are eliminated and replaced by the fitter ones from the new generation. This process is repeated until some terminating criteria are met e.g. a sufficiently high fitness is achieved or a time limit is reached.
+
+\subsection{Artificial Neural Networks}
+Niels - torsdag
+The human brain is one of the most complex systems we know of but is, as many other things in nature, constructed of only a few basic ingredients \cite{ann}. The basic ingredients mainly consist of neurons and synapses. The human brain has approximately $3 \times 10^{10}$ neurons which receives and sends electrical signals \cite{ann}. Synapses work like wires as they connect neruons and enables them to communicate. Artificial Neural Networks (ANNs) try to mimic these basic ingredients of the brain and is often used for pattern recognition \cite{ann}, controlling robots \cite{robotics-neural} and even for controlling enemies in computer games \cite{pc-game-neural}. 
+
+ANNs are modelled as a directed acyclid graph where each node represents a neuron and each edge represent a synapse. Neurons in ANNs can have many topologies but are typically seperated in three layers with an input layer, hidden layer and output layer. When the network is activated each node in the input layer receives a normalized input often between -1 and 1 or 0 and 1 and sends this value to all their connected neurons in the hidden layer through their synapses. Each synapse has a weight associated to it representing the how much of the input that gets passed through. The nodes in the hidden layer will in the same way pass on the signals on to the nodes in the output layer. 
+
+Maybe a figure showing an ANN with weights and a formula showing how weights work.
+
+Bias nodes?
+
+How can we learn -> Backpropagation and neuroevolution.
+
+% https://blog.itu.dk/MAIG-E2012/files/2012/08/notes.pdf
+
+\subsection{Neuroevolution and NEAT}
+Niels - torsdag
+
+
+% https://learnit.itu.dk/pluginfile.php/97055/mod_resource/content/1/evolutionary_robotics_and_neuroevolution.pdf
+
+\section{Methods}
+
+How does your algorithm/idea work? Describe in as much detail as you can fit into the report. 
+
+\subsection{Simple painting program}
+\label{painting-program}
+To be able to paint images based on the outputs of the artificial neural networks we have created a simple java paint program. We utilize the Graphics2D class for drawing lines, arcs, and rounded rectangles in certain colours and with certain brush sizes.
+The output of the ANN determines what the painting program should draw. We get 10 distinct outputs for the following:
+\begin{itemize}
+\item
+An X and a Y coordinate used for determining where the next brush stroke should go.
+\item
+A red, green, blue and alpha value determining the colour of the next stroke.
+\item
+A value for the size of the brush used.
+\item
+A value determining whether the brush should be lifted and repositioned another place.
+\item
+An X and a Y coordinate used for determining where the brush should be repositioned to in the above case or in the case where it has moved outside the canvas.
+\end{itemize}
+As the outputs values of the ANN are between 0 and 1 all of these are scaled appropriately e.g. the colour component values are scaled to be between 0 and 255 etc.
+A simple example of how the method for drawing a line would work is shown in FIG-XX. This illustrates how the program could draw based on three sets of outputs.
+
+\begin{figure}[ht]
+\centerline{\includegraphics[width=.5in]{drawLine.jpg}}
+\caption{An example of how the painting program could draw a line.}
+\end{figure}
+
+Niels - fredag
+
+\subsection{Interactive supervision}
+As we in this experiment attempt to have the program produce aesthetically beautiful images we need to consider how this is going to be assessed. It does not seem feasible to attempt to program a computer to evaluate the aesthetic qualities of the images produced as this is obviously not a simple matter. However an evolutionary algorithm requires a method to evaluate the fitness of the individual solutions (the images in our case.) Therefore we have decided to use a form of interactive supervision where a human being is presented with the images of each population and it is up to that person to decide the quality each of these images. Instead of assigning a fitness value to each image we have simplified the process to a binary choice where the supervisor only picks a select few images which are carried through to the next generation.
+An immediate downside to this approach is that it requires the presence of a human as well as a lot more time as compared to simply having the program compute a fitness as otherwise would be customary.
+FIG-XX shows the window that is presented to the supervising human.
+ 
+\begin{figure}[ht]
+\includegraphics[width=3in]{ISwindow.jpg}
+\caption{An example of a window with a population of 8 images presented to a human supervisor.}
+\end{figure}
+
+
+\subsection{JNEAT and evolution methods}
+JNEAT \cite{jneat} is a Java package implementing the NeuroEvolution of Augmenting Topologies method. The code was integraded to our project together with our implemented painting program. Creating a new population with JNEAT is straighforward as it basically just needs to know the number of input and output nodes each organism should have and the size of the population. Each organism has a neural network associated and a bunch of information about its genes. Neural networks in NEAT has an activation function taking an array of input values and returns an array of output values. 
+
+When evolving the population some code needs to be written to fit our needs. Three different evolution methods were implemented will be described with their advantages and disadvantages.
+
+\subsubsection{JNEATs Epoch}
+The first method that were implemented is exclusively based the Epoch method in JNEAT. The Epoch method is basically one round in the evolution that assigns a number of offsprings for each organism based on their fitness value and then does some mutation to the newborn afterwards. The entire method is several hundred lines of code and not very well documented. It was thus used as a block box without to much knowledge of how it works. Before calling the Epoch method we simply assigns a fitness value of 1 to the organisms that were selected in the interactive supervision and the rest we kill. This method does not seem to fit well for our use. JNEATs Epoch method seems to be designed for large populations of more than 50 as organism are seperated in species with their own traits and genes and with a small population there will only be one or maybe two species which is likely to die entirely because of their small size. 
+
+\subsubsection{Mating of X champions}
+
+After struggling with the previous method a new method was implemented. This method first kills all non-selected organisms and then mate the survivors until the population size is reached. There is 25\% chance that each offspring will mutate. It was not possible for us to reuse the mutation methods of JNEAT directly in this way so a creative version of a mutation function was invented. This mutation function mates the offspring with and entirely new organsism and the returns that offspring. In this way new random genes are added to the gene pool. 
+
+\subsubsection{Mutation of the fittest}
+A last method was implemented that is able to use the mutation methods of JNEAT. Inorder to reuse the methods a drastic change had to be done. It seemed that whenever we manually remove and add organism to populations in JNEAT we ruin the oppertunity to mutate properly so to enable this each organism is put in their own population. After the interactive supervision step every non-selected organism, and its population, is killed and replaced by random mutations of the surving organsim. Some mutations will have a large impact and some will have a small. This method only evolves using mutation and not mating or introduction of new genes.
+
+\subsection{Specified goal and image comparison}
+It is an interesting question whether an ANN can be trained to paint and exiting image. .. ref to other..
+
+In the configurations of our program it is possible to define a goal image which will be used in the fitness function by comparing it with the painted image of each organism. The following two methods for comparing images were identified. 
+
+\begin{enumerate}
+  \item One method for comparing images is to analyse how much each color is used on the canvas. Imagine an image of a chessboard. This would have a color usage of 50\% white and 50\% black. An entirely black canvas with 100\% black color usage would thus be 50\% similiar and the same with an entirely white canvas. Now imagine the negative image of the chessboard where black squares turn white and white squares turn black. This image would also have a color usage of 50\% white and 50\% black and thus be 100\% identical using this method. The question we have difficulty answering is how much these two images are identical? Technically they are totally opposite but most people would probably say they are very identical. Additonally, the color usage does not express anything about the shapes and forms on the canvas.
+  \item Another method is to compare all pixels on each image by the difference in RGB values. E.g. pixel $P_{a} = \{255,0,255\}$ (purple) and pixel $P_{b} = \{0,0,255\}$ (blue) would be $\frac{2}{3}$ identical. This method would only rate two images identical if they were the exact same image but they would not be able to identify the similarites of the two images in the chessboard example.
+\end{enumerate}
+
+The second method was implemented in our solution because we require that it will rate two images 100\% identical if and only if they are the exact same image. It is possible that a mix of these two methods would give the best results as it would still have our required property but we did not test this.
+
+When our program is configured to use a goal image it simply skips the interactive supervision part as it is able to evaluate the population by itself. 
+
+\subsection{Human inputs}
+As an idea to make the interactive supervision more interesting we have experimented with the addition of a human generated input to the ANN. We have implemented the possibility for audio to be used as an optional input. It can function via the microphone where the person can talk, shout or make noises which should in turn influence the paintings. Also it can capture audio for example from music played on the computer. The idea is that the person supervising should feel a sense of control over the images produced thus perhaps making the program an interesting installation in the context of an art or AI exhibition.
+The implementation itself is in fact rather simplistic at this point with only the volume level being used as input.
+
+\subsection{Configurations}
+The following configurations were used to produce the images we present.
+
+\begin{itemize}
+\item Evolution method: Mutation (Section \ref{mutation-method})
+\item Population size: 8
+\item MaxNodes: 40
+\item Image width: 300 px
+\item Image height: 300 px
+\item Paint time: 2000 steps
+\item Lift limit: 0.90
+\item Brush factor: 6
+\item Draw Line Percentage: 0.50
+\item Draw Round Rectangle Percentage: 0.75
+\item Background Color (RGB): 0,0,0
+\item Sound Input: false
+\item Mutation Rate: 1.0
+\end{itemize}
+
+\section{Results}
+
+\subsection{Example results}
+
+Figure \ref{evolution} shows the selected image of each genration in an evolution of 20 generations. It is clear that the color usage and general style are kept from one image to another. Some mutations produce small changes while other produce large changes which can also be seen on the images. Remember, that each image from generation $n+1$ is a mutation of the selected image in generation $n$.
+
+\begin{figure}[htp]
+\centerline{\includegraphics[width=1\columnwidth]{evolution.png}}
+\caption{Example of how an ANN was evolved in 20 steps showing the best individual from each iteration. Read from top left to right bottom. }
+\label{evolution}
+\end{figure}
+
+As computer scientists we see a lot of interesting and complex images emerge when using our program and especially when we are able to identify the effect of the implemented evolution method. 
+
+\subsection{Analysis by art students}
+To further study our results and get relevant feedback on our work we have teamed up with the students of the art school Musicon Art (managed by Erik Schwarzbart in Roskilde, Denmark). A portfolio of 34 images \ref{portfolio} created with our program were presented to the students without any introduction of the "artist". The students thus analysed the images while initially thinking the artist was a human. It was arranged this way to have a non-baised analysis with the focus on the results and not on the sender [can you say sender in english? better word].
+
+The students gave a lot of critique to each image and most of it fell into one of these four categories: 
+
+\begin{enumerate}
+  \item The main critique of the images presented was regarding the composition. Often the visual elements were positioned in places that gave the image a poor balance and in many cases large areas of the canvas was not used which created a negative reaction amongst the students. 
+  \item Another point of critique was the choice of colors and especially the combinations of these. A lot of the images was either lacking energy as the colors were too dull or too garish. Also, many of the images contained colors that did not complement each other very well. They pointed out that using a black background instead of white increased the contrast in the images which they appreciated.
+  \item Many of the students were missing depth in the images as they, except for a few, did not have any layers. \ldots
+  \item A general critique was that the images did not show any feelings. They said they did not have any soul. The images had too systematic brush strokes with human touches such as dripping paint and imprecisions. Many of the images gave associations to structures seen in natures such as the spirals of snails which was appriciated by some of the students. \ldots
+\end{enumerate}
+
+Despite the harsh critique a few images was selected which had good composition, color complementations and was generally received well even though they still lacked the human touch.
+
+
+\begin{figure}[htp]
+\centerline{\includegraphics[width=0.8\columnwidth]{25.png}}
+\caption{The image that were appriciated the most by the art students. }
+\label{fig-25}
+\end{figure}
+
+The art teacher Erik cropped and rotated some of the images to fix the composition issues. These improvements were generally appriciated by the students.
+
+Show difference of cropped and rotated versions.
+
+Some of the art students expressed their concerns of robots taking over the field of arts one day. One said "It is crucial that you do not implement feelings into the computer!" with a smile on her lips. 
+
+Based on the feedback from the students a couple of new images were produced using an unchanged version of our program and with the same configurations. Figure \ref{fig-37} shows one of these images. We would argue that this image uses the canvas very well, has several layers giving it depth and we believe the colors complement each other well. The overall style is however very systematic without human touches and does not show any feelings.
+
+\begin{figure}[htp]
+\centerline{\includegraphics[width=0.8\columnwidth]{37.png}}
+\caption{An image created using the feedback from the analysis}
+\label{fig-37}
+\end{figure}
+
+\subsection{Performance}
+
+The time to paint an image was low enough to enable for supervised learning without tiring the user. Painting one image with a resolution of 300x300 pixels takes on average 2539 ms. which makes an entire generation of 8 organism $2.539 s \times 8 = 20.3 s$ to paint an image each. A resolution of 300x300 is enough for making interesting images but resolutions larger than 1000x1000 would probably be more desirable if actual artworks is the goal which would take several minutes per generation.
+
+\begin{figure}[htp]
+\centerline{\includegraphics[width=0.95\columnwidth]{computation.eps}}
+\caption{Computation time for painting images with different image resolutions. Error bars show standard deviation (Test was run with 48 images per resolution). Paint time was set to 2000 steps. }
+\label{computation}
+\end{figure}
+
+\subsection{Resemblance test}
+
+A test were created for each of our three evolution methods to try to resemble a goal image (see Figure \ref{resemblances}). None of the methods were able to get close to the goal image even after 100 iterations. It can be seen that they almost stop evolving after 50 iterations. The image comparing method was thoroughly tested with different test images and showed no errors.
+
+\begin{figure}[htp]
+\centerline{\includegraphics[width=0.95\columnwidth]{resemblance.eps}}
+\caption{The highest fitness value reached in each iteration of the evolution. The high score of 0.7 to 0.8 is because of the white background on the goal image (see Figure \ref{resemblances}) but a lot still needs to be learned.}
+\label{resemblance}
+\end{figure}
+
+\begin{figure}[htp]
+\centerline{\includegraphics[width=1\columnwidth]{resemblances.png}}
+\caption{The images created by the three methods, (a) Mutation, (b) Mating and (c) JNEAT Epoch, when trying to resemble the goal image. }
+\label{resemblances}
+\end{figure}
+
+\subsection{Human inputs}
+- Test with students - no
+- Test with and without
+- Christian
+
+\section{Discussion}
+What are the strengths and shortcomings of your method? Why did you choose method X instead of Y? How would you develop it further, if you had time?
+
+\begin{thebibliography}{3}
+\bibitem{dawkins}
+R.~Dawkins, \emph{The Blind Watchmaker}, 1986 \hskip 1em plus 0.5em minus 0.4em\relax
+
+\bibitem{levin}
+G.~Levin, J.~Feinberg, and C.~Curtis, \emph{Alphabet synthesis machine}, //alphabet.tmema.org, 2006
+
+\bibitem{romero}
+J.~Romero, P.~Machado, \emph{The Art of Artificial Evolution}, A Handbook on Evolutionary Art and Music, Springer, 2008.
+
+\bibitem{ann}
+J.~Romero, P.~Machado, \emph{Neural networks: an introduction}, AI Applications Institute University of Edinburgh, 1999.
+
+\bibitem{robotics-neural}
+P.~Ross, \emph{Evolving Coordinated Quadruped Gaits with the HyperNEAT Generative Encoding}, In proceedings of the 2009 IEEE Congress on Evolutionary Computation (CEC), 2009.
+
+\bibitem{pc-game-neural}
+M.~Parker, B.~Bryant, \emph{Backpropagation without Human Supervision for Visual Control in Quake II}, In proceedings of the IEEE 2009 Symposium on Computational Intelligence and Games (CIG’09), 2009.
+
+\bibitem{cohen}
+http://www.aaronshome.com/aaron/index.html
+
+\bibitem{cohen2}
+http://www.pbs.org/safarchive/3\_ask/archive/qna/3284\_cohen.html
+
+\bibitem{fagerlund}
+Fagerlund, M. (2006). GeneticArt. http://www.cambrianlabs.com/mattias/GeneticArt
+
+\bibitem{picbreeder}
+Secretan et al. (2008). Picbreeder: Evolving Pictures Collaboratively Online. In Proceedings of the Computer Human Interaction Conference (CHI 2008). New York, NY: ACM, 2008
+
+\bibitem{sims}
+Sims, K. (1991). Artificial evolution for computer graphics. ACM Computer Graphics.
+
+\bibitem{jneat}
+JNEAT, http://nn.cs.utexas.edu/?jneat, accessed May 2014.
+
+
+
+
+\end{thebibliography}
+
+
+
+\section*{Appendix}
+
+% That's all folks...
+\end{document}
+

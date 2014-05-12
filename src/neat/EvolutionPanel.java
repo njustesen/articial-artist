@@ -111,7 +111,7 @@ public class EvolutionPanel extends JPanel implements MouseInputListener {
 			shiftSelected = n;
 		}
 		
-		else {
+		else {	
 			if (selected.contains(pictures.get(n)))
 				selected.remove(pictures.get(n));
 			else

@@ -1,0 +1,56 @@
+# Evolution Method
+# Values: mutation, neat, mating
+evolution = mutation
+
+# If method is neat or mating, champions is the number of 
+# artists selected in each round and novel is number 
+# of entirely new artists in each epoch.
+champions = 2
+novel = 2
+
+# Number of artists
+populationSize = 8
+
+# Max number of nodes
+maxNodes = 40
+
+# The width of the pictures to be painted
+# Note, that the evolution panel is not scrollable and the 
+# number and sizes of pictures it can show is limited.
+pictureWidth = 300
+pictureHeight = 300
+
+# Number of steps each artist will paint
+paintTime = 2000
+
+# The threshold for which the lift output must be higher 
+# in order to actually paint
+liftPercentage = 0.90
+
+# Maximum brush size will be pictureWidth / brushFactor
+brushFactor = 6
+
+# The threshold for which the style output must be lower 
+# in order to paint with the line/round-rect style.
+# If none of the following style is used, the Arc style is
+# selected.
+drawLinePercentage = 0.5
+drawRoundRectPercentage = 0.75
+
+# The goal image used as fitness function. 
+# goalImage = /home/niels/Documents/neuro-artist/goal.jpg
+
+# Where to put best images?
+outputFolder = /home/niels/Documents/neuro-artist/images/
+
+# The background color in RGB (0-255).
+backgroundColorR = 0
+backgroundColorG = 0
+backgroundColorB = 0
+
+# Use sound input?
+soundInput = false
+
+# Mutation rate
+# Medium level ~1.0
+mutationRate = 1.0
