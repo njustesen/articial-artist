@@ -1,4 +1,5 @@
-   package jGraph;
+/* Source code is from the JNEAT Project http://nn.cs.utexas.edu/?jneat */
+package jGraph;
 
    import java.awt.*;
    import java.awt.event.*;
@@ -178,7 +179,7 @@ public void updateConstant()
 			mb = max_x;
 
 		
-	     // vengono calcolati 2 tipi tali di coefficienti di proporzionalità
+	     // vengono calcolati 2 tipi tali di coefficienti di proporzionalitï¿½
 	     // 1) plot_k* per le curve
 	     // 2) k* per i grafi in cui si forza x == y
 	     // (nella curva avremo : 
@@ -1132,7 +1133,7 @@ public void drawAxis( String s, int tipo)
 			0); 
 	g2.setStroke(stroke);
 
-	// calcola quanto spazio è occupato dalle label numeriche
+	// calcola quanto spazio ï¿½ occupato dalle label numeriche
 	//  di riferimento ai valori delle curve tracciate
 
 	FontMetrics fm = g2.getFontMetrics();

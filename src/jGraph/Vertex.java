@@ -1,4 +1,5 @@
-   package jGraph;
+/* Source code is from the JNEAT Project http://nn.cs.utexas.edu/?jneat */
+package jGraph;
 
    import java.awt.geom.*;
    import java.util.*;
@@ -45,13 +46,13 @@
    // baricentro
 	  public int gx;
    
-   // oggetto di tipo Vertex a cui è riferito;
+   // oggetto di tipo Vertex a cui ï¿½ riferito;
    // utilizzato per link recurrent 
 	  public Vertex Vertex_ref;
    
-   // oggetto di tipo edge a cui è riferito;
+   // oggetto di tipo edge a cui ï¿½ riferito;
    // utilizzato in  link recurrent per sapere se il link
-   // è o meno positivo e altre informazioni
+   // ï¿½ o meno positivo e altre informazioni
 	  public Edge edge_ref;
    
    // utlizzato per calcolare altitude e quote

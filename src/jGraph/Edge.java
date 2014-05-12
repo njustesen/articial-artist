@@ -1,4 +1,5 @@
-   package jGraph;
+/* Source code is from the JNEAT Project http://nn.cs.utexas.edu/?jneat */
+package jGraph;
 
    import jNeatCommon.*;
 																																																																public class Edge {

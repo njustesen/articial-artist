@@ -1,4 +1,5 @@
-   package jNeatCommon;
+/* Source code is from the JNEAT Project http://nn.cs.utexas.edu/?jneat */
+package jNeatCommon;
 
 /**
  * Inserire qui la descrizione del tipo.
@@ -12,7 +13,7 @@
 	  public static final int DESCRIPTOR = 2;
    
    // type of edge
-   // ogni linea può essere unica, o maggiore di 1
+   // ogni linea puï¿½ essere unica, o maggiore di 1
    //
    
 	  public static final int LINE_FC = 10; // line first in sequence   

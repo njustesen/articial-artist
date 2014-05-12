@@ -1,4 +1,5 @@
-   package jGraph;
+/* Source code is from the JNEAT Project http://nn.cs.utexas.edu/?jneat */
+package jGraph;
 
    import java.util.*;
 																public class GrafRoutine {
@@ -29,10 +30,10 @@
 		 Vertex _tmp;
 		 int real_group_id = 0;
 	  
-	  // il nodo passato è virtuale.
+	  // il nodo passato ï¿½ virtuale.
 	  // dato che i nodi virtuali hanno uno e un solo lato a loro connessi viene
 	  // calcolata tutta la catena di vertici virtuali fino al nodo reale ,(che viene escluso).
-	  // per fare questo , viene calcolato l'id del lato reale, inactive, che è stato
+	  // per fare questo , viene calcolato l'id del lato reale, inactive, che ï¿½ stato
 	  // sostituito dai lati virtuali , vale a dire .'id di gruppo.
 	  // quindi in base all'id  di gruppo viene calcolato il nodo predecessore del nodo
 	  // corrente e ricorsivamente viene scorsa la catena fino ad arrivare al nodo reale.
@@ -42,7 +43,7 @@
 	  
 		 if (real_group_id == 0)
 		 {
-		 //	   System.out.print("\n **L** : il nodo passato è reale ......");
+		 //	   System.out.print("\n **L** : il nodo passato ï¿½ reale ......");
 			return _l;
 		 }
 	  
@@ -92,17 +93,17 @@
 	  
 		 real_group_id = _p.edge_id;
 	  
-	  // il nodo passato può essere reale o virtuale ;
+	  // il nodo passato puï¿½ essere reale o virtuale ;
 	  // nel caso sia reale il group_id = 0 , e di conseguenza la distanza vale 0;
-	  // (vengono così privilegiati i nodi reali a distanza 1 e poi i nodi virtuali!).
-	  // Se invece il punto _p , è virtuale, tale routine  , viene chiamata solo
+	  // (vengono cosï¿½ privilegiati i nodi reali a distanza 1 e poi i nodi virtuali!).
+	  // Se invece il punto _p , ï¿½ virtuale, tale routine  , viene chiamata solo
 	  // per i nodi che sono su distanze > 1; 
 	  // dato che il punto _p ,  identifica un gruppo , in base all'id  di gruppo
 	  // viene calcolato il nodo predecessore del nodo corrente e ricorsivamente viene 
 	  // scorsa la catena fino ad arrivare al nodo reale;
 	  // dato che ad ogni chiamata ricorsiva viene incrementato il path-length alla fine viene
-	  // ritornato proprio tale valore che è la distanza tra il nodo iniziale e quello 
-	  // all'estremità opposta.
+	  // ritornato proprio tale valore che ï¿½ la distanza tra il nodo iniziale e quello 
+	  // all'estremitï¿½ opposta.
 	  
 		 if (real_group_id == 0)
 		 {

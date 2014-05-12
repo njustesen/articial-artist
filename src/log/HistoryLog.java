@@ -1,4 +1,5 @@
-   package log;
+/* Source code is from the JNEAT Project http://nn.cs.utexas.edu/?jneat */
+package log;
 
 
 

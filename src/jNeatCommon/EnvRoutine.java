@@ -1,4 +1,5 @@
-   package jNeatCommon;
+/* Source code is from the JNEAT Project http://nn.cs.utexas.edu/?jneat */
+package jNeatCommon;
 
 import java.awt.*;import java.util.*;   /**
  * Insert the type's description here.

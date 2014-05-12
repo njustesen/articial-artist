@@ -65,15 +65,16 @@ public class PaintProgram extends JPanel{
 		line = null;
 	    DataLine.Info info = new DataLine.Info(TargetDataLine.class,
 	            format); 
+	    
 	    if (!AudioSystem.isLineSupported(info)) {
-	
+	    	System.out.println("Audio input not supported! ");
 	    }
 	
 	    try {
 	        line = (TargetDataLine) AudioSystem.getLine(info);
 	        line.open(format);
 	    } catch (LineUnavailableException ex) {
-	        // Handle the error ...
+	    	System.out.println("Audio input not supported!");
 	    }
 	
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -112,6 +113,9 @@ public class PaintProgram extends JPanel{
 			
 			// Get sound level
 			soundLevel = getSoundLevel();
+			if (Config.soundInput){
+				System.out.println(soundLevel);
+			}
 			//System.out.println(soundLevel);
 			
 			// Old position
@@ -125,7 +129,7 @@ public class PaintProgram extends JPanel{
 			in[2] = controller.getMove().getX();
 			in[3] = controller.getMove().getY();
 			if (Config.soundInput)
-				in[4] = soundLevel;
+				in[4] = soundLevel * 100;
 			else
 				in[4] = (double)time / (double)paintTime;
 			//in[5] = 0.5;
